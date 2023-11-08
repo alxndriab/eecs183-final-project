@@ -1,1 +1,1 @@
-# eecs183-final-projcet
+# eecs183-final-project
