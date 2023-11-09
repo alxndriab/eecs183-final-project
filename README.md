@@ -2,4 +2,36 @@
 
 Double check that everything is wired correctly. There should be two (2) wires between the Arduino and the breadboard, four (4) wires between the breadboard and the LED screen, and twelve (12) wires between the Arduino and the LED screen. (You will have more if you’ve wired the potentiometer and/or the button.)
 
+# SLIDES
+https://docs.google.com/presentation/d/1lle_tu7X_vg936_-UBO_V36wvrSDhdXmX1PCVqaTTHo/edit#slide=id.g294a140e427_0_358
+
+# Debugging
+`Serail.println()` to print to console
+Test with kit often:
+- one row of enemies at a time
+- order of operations count
+- one ball at a time
+
+# Workflow
+**Timeline**
+Player -> Invaders -> Ball -> Interactions -> Levels 2-5
+
+## invader and Cannonball
+Draw the enemies, set up the first level
+Move the top row of enemies down the display
+Introduce the ball.
+Fire the ball
+Move ball up the display
+Stop ball when it reaches the top
+
+## Interactions
+Detect collisions
+Between ball and enemies
+Between enemies and player
+Between enemies and bottom of display
+Create level 2
+Develop transitions between levels, game over, restarting a level
+Create remaining levels
+
+## Game - Time and Looping
 
