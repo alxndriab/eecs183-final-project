@@ -66,6 +66,9 @@ class Invader {
     }
     // sets values for private date members x and y
     Invader(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
+      strength = 0;
     }
     // sets values for private data members
     Invader(int x_arg, int y_arg, int strength_arg) {
