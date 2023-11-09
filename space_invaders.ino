@@ -103,10 +103,36 @@ class Invader {
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
     void draw() {
-      if(strength > 0){
-        //I'm not sure if we need something else as well, and im not sure how to have them be random colors
-        draw_with_rgb(RED, BLUE);
+     if(strength > 0){
+        //I'm not sure if this is right
+        
+      if(strength = 1){
+        body_color = RED;
       }
+      if(strength = 2){
+        body_color = ORANGE;
+      }
+      if(strength = 3){
+        body_color = YELLOW;
+      }
+      if(strength = 4){
+        body_color = GREEN;
+      }
+      if(strength = 5){
+        body_color = BLUE;
+      }
+      if(strength = 6){
+        body_color = PURPLE;
+      }
+      if(strength = 7){
+        body_color = WHITE;
+      }
+      }
+      else{
+        body_color = BLACK;
+      }
+             draw_with_rgb(body_color, BLUE);
+      
     }
     
     // draws black where the Invader used to be
