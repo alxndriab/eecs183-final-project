@@ -50,14 +50,14 @@ To move an object, i.e., Player, Invader, or Cannonball, you must
 4. draw() the pixels of the instance
   The erase() and draw() functions will call draw_with_rgb()
 
-## Interactions
-Detect collisions
-Between ball and enemies
-Between enemies and player
-Between enemies and bottom of display
-Create level 2
-Develop transitions between levels, game over, restarting a level
-Create remaining levels
+## Interactions and Levels
+1. Detect collisions
+- Between ball and enemies
+- Between enemies and player
+- Between enemies and bottom of display
+2. Create level 2
+3. Develop transitions between levels, game over, restarting a level
+4. Create remaining levels
 
 ## Game - Time and Looping
 Keep track of the last time you moved the enemies, then keep checking to see if at least some minimum time has passed
