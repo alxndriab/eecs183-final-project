@@ -130,6 +130,20 @@ class Invader {
     
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
+      //maybe?
+      matrix.drawPixel(x, y, body_color.to_333);
+      matrix.drawPixel(x + 1, y, body_color);
+      matrix.drawPixel(x - 1, y - 1, body_color);
+      matrix.drawPixel(x + 2, y - 1, body_color);
+      matrix.drawPixel(x - 1, y - 2, body_color);
+      matrix.drawPixel(x, y - 2, body_color);
+      matrix.drawPixel(x + 1, y - 2, body_color);
+      matrix.drawPixel(x + 2, y - 2, body_color);
+      matrix.drawPixel(x - 1, y - 3, body_color);
+      matrix.drawPixel(x + 2, y - 3, body_color);
+
+      matrix.drawPixel(x, y - 1, eye_color);
+      matrix.drawPixel(x + 1, y - 1, eye_color);
     }
 };
 
