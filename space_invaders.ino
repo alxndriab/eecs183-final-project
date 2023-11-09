@@ -72,38 +72,55 @@ class Invader {
     }
     // sets values for private data members
     Invader(int x_arg, int y_arg, int strength_arg) {
+       x = x_arg;
+       y = y_arg;
+       strength = strength_arg;
     }
     // sets values for private data members
     void initialize(int x_arg, int y_arg, int strength_arg) {
+       x = x_arg;
+       y = y_arg;
+       strength = strength_arg;
     }
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     int get_strength() const {
+      return strength;
     }
 
     // Moves the Invader down the screen by one row
     // Modifies: y
     void move() {
+      y = y - 1;
     }
     
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
     void draw() {
+      if(strength > 0){
+        //I'm not sure if we need something else as well, and im not sure how to have them be random colors
+        draw_with_rgb(RED, BLUE);
+      }
     }
     
     // draws black where the Invader used to be
     // calls: draw_with_rgb
     void erase() {
+       draw_with_rgb(BLACK, BLACK);
     }    
     
     // Invader is hit by a Cannonball.
     // Modifies: strength
     // calls: draw, erase
     void hit() {
+      //I'm not sure how we're supposed to call draw and erase yet
+      strength = strength - 1;
     }
 
   private:
