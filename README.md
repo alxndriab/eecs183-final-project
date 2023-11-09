@@ -60,4 +60,24 @@ Develop transitions between levels, game over, restarting a level
 Create remaining levels
 
 ## Game - Time and Looping
+Keep track of the last time you moved the enemies, then keep checking to see if at least some minimum time has passed
+1. call millis and store return value
+2. If current time is greater than last time enemies were moved by at least 2 seconds
+- Move the row of enemies down
+- Update the last time invaders were moved down to now
+3. Go to step 1
+```
+unsigned long time = millis();
+const int MIN_MOVE_ENEMY = 2000;
+const int MIN_MOVE_PLAYER = 3000;
+
+if (time > MIN_MOVE_ENEMY) {
+  moveEnemyRowDown(enemy[i]);
+  time = millis();
+}
+
+//go back to if statement again
+```
+
+
 
