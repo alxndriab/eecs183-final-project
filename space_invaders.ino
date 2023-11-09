@@ -224,7 +224,16 @@ class Game {
     // see spec for details of game
     // Modifies: global variable matrix
     void update(int potentiometer_value, bool button_pressed) {
+
+      // temporary statement to test drawing a pixel to the LED display
+      // First argument - x coordinate
+      // Second argument - y coordinate
+      // Third argument - Color converted to the format required by the drawPixel functiuon
+      matrix.drawPixel(4, 6, RED.to_333());
+      //COMMENT
+    
     }
+
 
   private:
     int level;
@@ -271,4 +280,3 @@ void print_lives(int lives) {
 // displays "game over"
 void game_over() {
 }
-
