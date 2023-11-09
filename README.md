@@ -12,6 +12,17 @@ Test with kit often:
 - order of operations count
 - one ball at a time
 
+```c++
+// as you move the potentiometer,
+// this value should change
+Serial.println(potentiometer_value);
+
+// should print 1 when button is pressed
+// should print 0 when button is not pressed
+Serial.print(button_pressed);
+
+```
+
 # Workflow
 **Timeline**
 Player -> Invaders -> Ball -> Interactions -> Levels 2-5
