@@ -43,11 +43,12 @@ Stop ball when it reaches the top
 
 
 ### Moving an Object on the Display
-To move an object, i.e., Player, Invader, or Cannonball, you must manually redraw all of the pixels
-erase() the pixels of the instance
-Update the position (x or y) of the instance
-draw() the pixels of the instance
-The erase() and draw() functions will call draw_with_rgb()
+To move an object, i.e., Player, Invader, or Cannonball, you must 
+1. manually redraw all of the pixels
+2. erase() the pixels of the instance
+3. Update the position (x or y) of the instance
+4. draw() the pixels of the instance
+  The erase() and draw() functions will call draw_with_rgb()
 
 ## Interactions
 Detect collisions
