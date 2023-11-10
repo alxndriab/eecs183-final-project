@@ -136,16 +136,21 @@ class Invader {
       //left top corner point is default xy point
 
       for (int i = 0; i < 4; i++) {
-        for (int j = 0; i < 4; j++) {
+        for (int j = 0; j < 4; j++) {
           if (INVADER_STENCIL[i][j] == 0) {
-            matrix.drawPixel(x, y, BLACK.to_333());
+            matrix.drawPixel(j, i, BLACK.to_333());
           }
           else if (INVADER_STENCIL[i][j] == 1) {
-            matrix.drawPixel(x, y + 1, body_color.to_333());
+            matrix.drawPixel(j, i, body_color.to_333());
           }
           else {
-            matrix.drawPixel(x, y - 1, eye_color.to_333());
+            matrix.drawPixel(j, i, eye_color.to_333());
           }
+          Serial.print(i);
+          Serial.print(",");
+          Serial.print(j);
+          Serial.print(" ");
+          Serial.println(INVADER_STENCIL[i][j]);
         }
       }
 
@@ -338,4 +343,3 @@ void print_lives(int lives) {
 // displays "game over"
 void game_over() {
 }
-
