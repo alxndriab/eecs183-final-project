@@ -76,7 +76,7 @@ if (time > MIN_MOVE_ENEMY) {
   time = millis();
 }
 
-### Update
+**Update**
 Given this description, the key part of your code will need to do the following:
 - Update the position of the player based on the value of the potentiometer
 - Update the position of the cannonball, including detecting if a new cannonball is being fired
