@@ -76,6 +76,15 @@ if (time > MIN_MOVE_ENEMY) {
   time = millis();
 }
 
+### Update
+Given this description, the key part of your code will need to do the following:
+- Update the position of the player based on the value of the potentiometer
+- Update the position of the cannonball, including detecting if a new cannonball is being fired
+- Update the position of each invader
+- Detect if the cannonball is colliding with any of the invaders; if so, both the cannonball and the invader disappear
+- Detect if the player is colliding with any of the invaders; if so, the player loses a life and the level restarts
+- Detect if all the invaders are killed; if so, start the next level
+
 //go back to if statement again
 ```
 
