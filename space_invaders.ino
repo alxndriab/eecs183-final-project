@@ -157,36 +157,19 @@ class Invader {
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
       //maybe?
-      matrix.drawPixel(x, y, body_color.to_333());
-      matrix.drawPixel(x + 1, y, body_color.to_333());
-      matrix.drawPixel(x - 1, y - 1, body_color.to_333());
-      matrix.drawPixel(x + 2, y - 1, body_color.to_333());
-      matrix.drawPixel(x - 1, y - 2, body_color.to_333());
-      matrix.drawPixel(x, y - 2, body_color.to_333());
-      matrix.drawPixel(x + 1, y - 2, body_color.to_333());
-      matrix.drawPixel(x + 2, y - 2, body_color.to_333());
-      matrix.drawPixel(x - 1, y - 3, body_color.to_333());
-      matrix.drawPixel(x + 2, y - 3, body_color.to_333());
-
-      matrix.drawPixel(x, y - 1, eye_color.to_333());
-      matrix.drawPixel(x + 1, y - 1, eye_color.to_333());
-
-    // alternative solution 
-      for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
-          if (i == 0 && j == 0 || i == 0 && j == 3 || i == 3 && j == 1 || i == 3 && j == 2) {
-            matrix.drawPixel(i, j, BLACK.to_333());
+      for (int i = 0; i < 4; i++) {
+        for (int j = 0; i < 4; j++) {
+          if (INVADER_STENCIL[i][j] == 0) {
+            matrix.drawPixel(x, y, BLACK.to_333())
           }
-          else if (i == 1 && j == 1 || i == 1 && j == 2) {
-            matrix.drawPixel(i, j, eye_color.to_333);
-          }
+          else if (INVADER_STENCIL[i][j] == 1) {
+            matrix.drawPixel(x, y + 1, body_color.to_333())
           }
           else {
-            matrix.drawPixel(i, j, body_color.to_333);
+            matrix.drawPixel(x, y - 1, eye_color.to_333())
           }
         }
       }
-    }
 };
 
 class Cannonball {
