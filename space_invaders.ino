@@ -163,22 +163,22 @@ class Invader {
     void draw_with_rgb(Color body_color, Color eye_color) {
       //left top corner point is default xy point
 
-      for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-          if (INVADER_STENCIL[i][j] == 0) {
-            matrix.drawPixel(j, i, BLACK.to_333());
+      for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+          if (INVADER_STENCIL[y][x] == 0) {
+            matrix.drawPixel(y, x, BLACK.to_333());
           }
-          else if (INVADER_STENCIL[i][j] == 1) {
-            matrix.drawPixel(j, i, body_color.to_333());
+          else if (INVADER_STENCIL[y][x] == 1) {
+            matrix.drawPixel(y, x, body_color.to_333());
           }
           else {
-            matrix.drawPixel(j, i, eye_color.to_333());
+            matrix.drawPixel(y, x, eye_color.to_333());
           }
-          Serial.print(i);
+          Serial.print(y);
           Serial.print(",");
-          Serial.print(j);
+          Serial.print(x);
           Serial.print(" ");
-          Serial.println(INVADER_STENCIL[i][j]);
+          Serial.println(INVADER_STENCIL[y][x]);
         }
       }
     }
@@ -233,14 +233,14 @@ class Cannonball {
     
     // draws the Cannonball, if it is fired
     void draw() {
-      matrix.drawPixel(x, y, YELLOW.to_333());
-
-
+      if (fired) {
+        draw_with_rgb(ORANGE);
+      }
     }
     
     // draws black where the Cannonball used to be
     void erase() {
-      
+      draw_with_rgb(BLACK);
     }
 
   private:
@@ -281,12 +281,13 @@ class Player {
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
-
+      draw_with_rgb(AQUA);
     }
     
     // draws black where the Player used to be
     // calls: draw_with_rgb
     void erase() {
+      draw_with_rgb(BLACK);
     }
 
   private:
@@ -302,7 +303,24 @@ class Player {
     
     // draws the player
     void draw_with_rgb(Color color) {
-      
+      for (int y = 0; y < 2; y++) {
+        for (int x = 0; x < 3; x++) {
+          if (PLAYER_STENCIL[y][x] == 0) {
+            matrix.drawPixel(y, x, BLACK.to_333());
+          }
+          else if (PLAYER_STENCIL[y][x] == 1) {
+            matrix.drawPixel(y, x, body_color.to_333());
+          }
+          else {
+            matrix.drawPixel(y, x, eye_color.to_333());
+          }
+          Serial.print(y);
+          Serial.print(",");
+          Serial.print(x);
+          Serial.print(" ");
+          Serial.println(PLAYER_STENCIL[y][x]);
+        }
+      }
     }
 };
 
