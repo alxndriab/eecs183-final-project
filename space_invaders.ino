@@ -17,7 +17,14 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 
-const int INVADER_STENCIL[4][4] = { {0, 1, 1, 0}, {1, 2, 2, 1}, {1, 1, 1, 1}, {1, 0, 0, 1}};
+// global constant for the width/height of the LED screen
+const int LED_HEIGHT = 16; 
+const int LED_WIDTH = 32;  
+
+const int INVADER_STENCIL[4][4] = { {0, 1, 1, 0}, 
+                                    {1, 2, 2, 1}, 
+                                    {1, 1, 1, 1}, 
+                                    {1, 0, 0, 1}};
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -106,9 +113,29 @@ class Invader {
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
     void draw() {
-      if(strength > 0){
-        //I'm not sure if we need something else as well, and im not sure how to have them be random colors
+      if (strength <= 0) {
+        draw_with_rgb(BLACK, BLACK);
+      }
+      if (strength == 1) {
         draw_with_rgb(RED, BLUE);
+      }
+      else if (strength == 2) {
+        draw_with_rgb(ORANGE, BLUE);
+      }
+      else if (strength == 3) {
+        draw_with_rgb(YELLOW, BLUE);
+      }
+      else if (strength == 4) {
+        draw_with_rgb(GREEN, BLUE);
+      }
+      else if (strength == 5) {
+        draw_with_rgb(BLUE, BLUE);
+      }
+      else if (strength == 6) {
+        draw_with_rgb(PURPLE, BLUE);
+      }
+      else if (strength >= 7) {
+        draw_with_rgb(WHITE, BLUE);
       }
     }
     
@@ -122,8 +149,9 @@ class Invader {
     // Modifies: strength
     // calls: draw, erase
     void hit() {
-      //I'm not sure how we're supposed to call draw and erase yet
-      strength = strength - 1;
+      strength--;
+      erase();
+      draw();
     }
 
   private:
@@ -153,7 +181,6 @@ class Invader {
           Serial.println(INVADER_STENCIL[i][j]);
         }
       }
-
     }
 };
 
@@ -192,13 +219,16 @@ class Cannonball {
     // moves the Cannonball and detects if it goes off the screen
     // Modifies: y, fired
     void move() {
+      fired = true;
+      y += 1;
+      if (y > LED_HEIGHT) {
+        reset();
+      }
     }
     
     // resets private data members to initial values
     void hit() {
-      x = 0;
-      y = 0;
-      fired = false;
+      reset();
     }
     
     // draws the Cannonball, if it is fired
@@ -245,7 +275,7 @@ class Player {
     
     // Modifies: lives
     void die() {
-      lives = 0;
+      lives--;
     }
     
     // draws the Player
