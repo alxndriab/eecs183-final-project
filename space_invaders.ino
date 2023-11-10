@@ -171,6 +171,21 @@ class Invader {
       matrix.drawPixel(x, y - 1, eye_color.to_333());
       matrix.drawPixel(x + 1, y - 1, eye_color.to_333());
 
+    // alternative solution 
+      for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+          if (i == 0 && j == 0 || i == 0 && j == 3 || i == 3 && j == 1 || i == 3 && j == 2) {
+            matrix.drawPixel(i, j, BLACK.to_333());
+          }
+          else if (i == 1 && j == 1 || i == 1 && j == 2) {
+            matrix.drawPixel(i, j, eye_color.to_333);
+          }
+          }
+          else {
+            matrix.drawPixel(i, j, body_color.to_333);
+          }
+        }
+      }
     }
 };
 
