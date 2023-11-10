@@ -17,6 +17,8 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 
+const int INVADER_STENCIL[4][4] = { {0, 1, 1, 0}, {1, 2, 2, 1}, {1, 1, 1, 1}, {1, 0, 0, 1}};
+
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 
@@ -100,39 +102,14 @@ class Invader {
       y = y - 1;
     }
     
+
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
     void draw() {
-     if(strength > 0){
-        //I'm not sure if this is right
-        
-      if(strength = 1){
-        body_color = RED;
+      if(strength > 0){
+        //I'm not sure if we need something else as well, and im not sure how to have them be random colors
+        draw_with_rgb(RED, BLUE);
       }
-      if(strength = 2){
-        body_color = ORANGE;
-      }
-      if(strength = 3){
-        body_color = YELLOW;
-      }
-      if(strength = 4){
-        body_color = GREEN;
-      }
-      if(strength = 5){
-        body_color = BLUE;
-      }
-      if(strength = 6){
-        body_color = PURPLE;
-      }
-      if(strength = 7){
-        body_color = WHITE;
-      }
-      }
-      else{
-        body_color = BLACK;
-      }
-             draw_with_rgb(body_color, BLUE);
-      
     }
     
     // draws black where the Invader used to be
@@ -156,20 +133,23 @@ class Invader {
     
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
-      //maybe?
+      //left top corner point is default xy point
+
       for (int i = 0; i < 4; i++) {
         for (int j = 0; i < 4; j++) {
           if (INVADER_STENCIL[i][j] == 0) {
-            matrix.drawPixel(x, y, BLACK.to_333())
+            matrix.drawPixel(x, y, BLACK.to_333());
           }
           else if (INVADER_STENCIL[i][j] == 1) {
-            matrix.drawPixel(x, y + 1, body_color.to_333())
+            matrix.drawPixel(x, y + 1, body_color.to_333());
           }
           else {
-            matrix.drawPixel(x, y - 1, eye_color.to_333())
+            matrix.drawPixel(x, y - 1, eye_color.to_333());
           }
         }
       }
+
+    }
 };
 
 class Cannonball {
@@ -182,18 +162,26 @@ class Cannonball {
     
     // resets private data members to initial values
     void reset() {
+      x = 0;
+      y = 0;
+      fired = false;
     }
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     bool has_been_fired() const {
+      return fired;
     }
     
     // sets private data members
     void fire(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
     }
     
     // moves the Cannonball and detects if it goes off the screen
@@ -203,14 +191,21 @@ class Cannonball {
     
     // resets private data members to initial values
     void hit() {
+      x = 0;
+      y = 0;
+      fired = false;
     }
     
     // draws the Cannonball, if it is fired
     void draw() {
+      matrix.drawPixel(x, y, YELLOW.to_333());
+
+
     }
     
     // draws black where the Cannonball used to be
     void erase() {
+      
     }
 
   private:
@@ -229,23 +224,29 @@ class Player {
     
     // getters
     int get_x() const {
+      return x;
     }
     int get_y() const {
+      return y;
     }
     int get_lives() const {
+      return lives;
     }
     
     // setter
     void set_x(int x_arg) {
+      x = x_arg;
     }
     
     // Modifies: lives
     void die() {
+      lives = 0;
     }
     
     // draws the Player
     // calls: draw_with_rgb
     void draw() {
+
     }
     
     // draws black where the Player used to be
@@ -260,10 +261,13 @@ class Player {
 
     // sets private data members x and y to initial values
     void initialize(int x_arg, int y_arg) {
+      x = x_arg;
+      y = y_arg;
     }
     
     // draws the player
     void draw_with_rgb(Color color) {
+      
     }
 };
 
@@ -282,17 +286,12 @@ class Game {
     // advances the game simulation one step and renders the graphics
     // see spec for details of game
     // Modifies: global variable matrix
+
+    //this is the main function
     void update(int potentiometer_value, bool button_pressed) {
-
-      // temporary statement to test drawing a pixel to the LED display
-      // First argument - x coordinate
-      // Second argument - y coordinate
-      // Third argument - Color converted to the format required by the drawPixel functiuon
-      matrix.drawPixel(4, 6, RED.to_333());
-      //COMMENT
-    
+      Invader i1(1, 2, 1);
+      i1.draw();
     }
-
 
   private:
     int level;
@@ -339,3 +338,4 @@ void print_lives(int lives) {
 // displays "game over"
 void game_over() {
 }
+
