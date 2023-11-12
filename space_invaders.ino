@@ -345,7 +345,8 @@ class Game {
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
     void setupGame() {
-      //**********this turns on the display
+//i dont have this stuff in my code, but i dont want to get rid of it yet just in case
+ /*     //**********this turns on the display
       matrix.begin();
       //********* this clears the display initially
       for (int i = 0; i < 32; i++) {
@@ -353,7 +354,9 @@ class Game {
           matrix.drawPixel(i, j, BLACK.to_333());
         }
       }
+     */
       
+matrix.fillScreen(BLACK.to_333());
 int x = 0;
 int y = 0;
 
