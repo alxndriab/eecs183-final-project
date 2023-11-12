@@ -286,9 +286,8 @@ class Player {
     }
     
     // Modifies: lives
-    //**********should be live = 0 instead of lives-- 
     void die() {
-      lives = 0;
+      lives--;
     }
     
     // draws the Player
