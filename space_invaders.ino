@@ -138,7 +138,7 @@ class Invader {
       else if (strength == 6) {
         draw_with_rgb(PURPLE, BLUE);
       }
-      else if (strength >= 7) {
+      else if (strength == 7) {
         draw_with_rgb(WHITE, BLUE);
       }
     }
