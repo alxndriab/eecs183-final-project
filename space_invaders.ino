@@ -353,8 +353,95 @@ class Game {
           matrix.drawPixel(i, j, BLACK.to_333());
         }
       }
-      //note: this below is level 1 specific code - MUST CHANGE FOR LEVEL 2
-      print_level(1);
+      
+//the stuff below has compiler errors, especially with fillScreen
+ int x = 0;
+int y = 0;
+
+      if(level == 1){
+        print_level(level);
+        delay(3000);
+        matrix.fillScreen(BLACK);
+        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          enemies[i].initialize(x, y, 1);
+          x += 4;
+        }
+      }
+
+      if(level == 2){
+        print_level(level);
+        delay(3000);
+        matrix.fillScreen(BLACK);
+        for(int i = 0; i < NUM_ENEMIES; i++){
+          enemies[i].initialize(x, y, 1);
+          x += 4;
+          if(i = NUM_ENEMIES / 2){
+            y += 8;
+          }
+        }
+        for(int i = 1; i < NUM_ENEMIES / 2; i += 2){
+        enemies[i].initialize(x, y, 2);
+          x += 4;
+       }
+         y += 8;
+        for(int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i += 2){
+          enemies[i].initialize(x, y, 2);
+          x += 4;
+        }
+      }
+
+    if(level == 3){
+       print_level(level);
+        matrix.delay(3000);
+        matrix.fillScreen(BLACK);
+      for(int i = 0; i < NUM_ENEMIES ; i++){
+       int j = (i + 1) % 5;
+        enemies[i].initialize(x, y, j);
+        x += 4;
+        if(i = NUM_ENEMIES / 2){
+          y += 8;
+        }
+      }
+    }
+
+    if(level == 4){
+       print_level(level);
+       matrix.delay(3000);
+       matrix.fillScreen(BLACK);
+    for(int i = 0; i < NUM_ENEMIES / 2; i++){
+      if(i % 2 == 0){
+        enemies[i].initialize(x, y, 5);
+      }
+      else{
+        enemies[i].initialize(x, y, 4);
+      }
+      x += 4;
+    }
+    y += 8;
+    for(int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++){
+      if(i % 2 == 0){
+        enemies[i].initialize(x, y, 2);
+      }
+      else{
+        enemies[i].initialize(x, y, 3);
+      }
+      x += 4;
+    }
+    }
+
+    if(level > 4){
+       print_level(level);
+       matrix.delay(3000);
+       matrix.fillScreen(BLACK);
+      for(int i = 0; i < NUM_ENEMIES ; i++){
+       int j = random(1, 8);
+        enemies[i].initialize(x, y, j);
+        x += 4;
+        if(i = NUM_ENEMIES / 2){
+          y += 8;
+        }
+      }
+    }
 
       //********* this clears the display - again, after printing the level
       for (int i = 0; i < 32; i++) {
