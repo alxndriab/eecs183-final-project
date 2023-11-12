@@ -138,7 +138,7 @@ class Invader {
       else if (strength == 6) {
         draw_with_rgb(PURPLE, BLUE);
       }
-      else if (strength == 7) {
+      else if (strength >= 7) {
         draw_with_rgb(WHITE, BLUE);
       }
     }
@@ -167,23 +167,18 @@ class Invader {
     void draw_with_rgb(Color body_color, Color eye_color) {
       //left top corner point is default xy point
       //******************changed from int i = 0 and int j = 0 and i < 4 and j < 4 to int i = x and int j = y and i < x + 4 and j < y + 4 so that the xy coordinates are applied to the placement of invader
-      for (int i = x; i < x + 4; i++) {
-        for (int j = y; j < y + 4; j++) {
-          if (INVADER_STENCIL[j][i] == 0) {
-            matrix.drawPixel(j, i, BLACK.to_333());
+
+      for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+          if (INVADER_STENCIL[row][col] == 0) {
+            matrix.drawPixel(col + x, row + y, BLACK.to_333());
           }
-          else if (INVADER_STENCIL[i][j] == 1) {
-            matrix.drawPixel(j, i, body_color.to_333());
+          else if (INVADER_STENCIL[row][col] == 1) {
+            matrix.drawPixel(col + x, row + y, body_color.to_333());
           }
           else {
-            matrix.drawPixel(j, i, eye_color.to_333());
+            matrix.drawPixel(col + x, row + y, eye_color.to_333());
           }
-          //*********below only for testing purposes - TO BE DELETED
-          Serial.print(y);
-          Serial.print(",");
-          Serial.print(x);
-          Serial.print(" ");
-          Serial.println(INVADER_STENCIL[y][x]);
         }
       }
 
@@ -243,7 +238,7 @@ class Cannonball {
     void draw() {
       if (fired) {
         matrix.drawPixel(x, y, ORANGE.to_333());
-        matrix.drawPixel(x + 1, y, ORANGE.to_333());
+        matrix.drawPixel(x, y + 1, ORANGE.to_333());
       }
     }
     
@@ -251,7 +246,7 @@ class Cannonball {
     //*************the same applies here
     void erase() {
       matrix.drawPixel(x, y, BLACK.to_333());
-      matrix.drawPixel(x + 1, y, BLACK.to_333());
+      matrix.drawPixel(x, y + 1, BLACK.to_333());
     }
 
   private:
@@ -264,8 +259,8 @@ class Player {
   public:
     Player() {
       //*********** should the player initialization be set to the bottom of the pixel page? as in y = 15
-      x = 0;
-      y = 15;
+      x = 15;
+      y = 14;
       lives = 3;
     }
     
@@ -316,20 +311,25 @@ class Player {
     // draws the player
     //************** changed a bit - cannot use same format as previous draw_with_rgb because need to create a new hardcoded STENCIL for player (seen above)
     void draw_with_rgb(Color color) {
-      for (int i = x; i < x + 3; i++) {
-        for (int j = y; j < y + 3; j++) {
-          if (PLAYER_STENCIL[i][j] == 0) {
-            matrix.drawPixel(j, i, BLACK.to_333());
+      // for (int i = 0; i < 3; i++) {
+      //   for (int j = 0; j < 3; j++) {
+      //     if (PLAYER_STENCIL[i][j] == 0) {
+      //       matrix.drawPixel(j + x, i + y, BLACK.to_333());
+      //     }
+      //     else {
+      //       matrix.drawPixel(j + x, i + y, color.to_333());
+      //     }
+      //   }
+      // }
+
+      for (int row = 0; row < 2; row++) {
+        for (int col = 0; col < 3; col++) {
+          if (PLAYER_STENCIL[row][col] == 0) {
+            matrix.drawPixel(col + x, row + y, BLACK.to_333());
           }
           else {
-            matrix.drawPixel(j, i, color.to_333());
+            matrix.drawPixel(col + x, row + y, color.to_333());
           }
-          //**********below purely for testing purposes - TO BE DELETED
-          Serial.print(y);
-          Serial.print(",");
-          Serial.print(x);
-          Serial.print(" ");
-          Serial.println(PLAYER_STENCIL[y][x]);
         }
       }
     }
@@ -345,132 +345,147 @@ class Game {
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
     void setupGame() {
-//i dont have this stuff in my code, but i dont want to get rid of it yet just in case
- /*     //**********this turns on the display
-      matrix.begin();
-      //********* this clears the display initially
-      for (int i = 0; i < 32; i++) {
-        for (int j = 0; j < 16; j++) {
-          matrix.drawPixel(i, j, BLACK.to_333());
-        }
-      }
-     */
-      
-matrix.fillScreen(BLACK.to_333());
-int x = 0;
-int y = 0;
+      //! MOVE LEVEL SOMEWHERE ELSE
+      level = 100;
+
+      matrix.fillScreen(BLACK.to_333());
+      int x = 0;
+      int y = 0;
+
+      Serial.println("Inside setupGame()");
+      Serial.println(level);
+
+      print_level(level);
+      print_lives(player.get_lives());
 
       if(level == 1){
-        print_level(level);
-        delay(3000);
-        matrix.fillScreen(BLACK.to_333());
+        Serial.println("Inside level 1");
+
         for(int i = 0; i < NUM_ENEMIES / 2; i++){
           enemies[i].initialize(x, y, 1);
+          enemies[i].draw();
           x += 4;
         }
       }
 
       if(level == 2){
-        print_level(level);
-        delay(3000);
-        matrix.fillScreen(BLACK.to_333());
-        for(int i = 0; i < NUM_ENEMIES; i++){
-          enemies[i].initialize(x, y, 1);
-          x += 4;
-          if(i = NUM_ENEMIES / 2){
-            y += 8;
+        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          if(i % 2 == 0){
+            enemies[i].initialize(x, y, 1);
+            enemies[i].draw();
           }
-        }
-        for(int i = 1; i < NUM_ENEMIES / 2; i += 2){
-        enemies[i].initialize(x, y, 2);
+          else{
+            enemies[i].initialize(x, y, 2);
+            enemies[i].draw();
+          }
           x += 4;
-       }
-         y += 8;
-        for(int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i += 2){
-          enemies[i].initialize(x, y, 2);
+        }
+
+        y = 4;
+        x = 0;
+
+        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          if(i % 2 == 0){
+            enemies[i].initialize(x, y, 2);
+            enemies[i].draw();
+          }
+          else{
+            enemies[i].initialize(x, y, 1);
+            enemies[i].draw();
+          }
           x += 4;
         }
       }
 
     if(level == 3){
-       print_level(level);
-        delay(3000);
-        matrix.fillScreen(BLACK.to_333());
-      for(int i = 0; i < NUM_ENEMIES ; i++){
-       int j = (i + 1) % 5;
-        enemies[i].initialize(x, y, j);
-        x += 4;
-        if(i = NUM_ENEMIES / 2){
-          y += 8;
+      int count = 1;
+      for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          if(i % 2 == 0){
+            enemies[i].initialize(x, y, count);
+            enemies[i].draw();
+          }
+          else{
+            enemies[i].initialize(x, y, count);
+            enemies[i].draw();
+          }
+          x += 4;
+
+          count++;
+
+          if (count == 6) {
+            count = 1;
+          }
         }
-      }
+
+        y = 4;
+        x = 0;
+
+        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          if(i % 2 == 0){
+            enemies[i].initialize(x, y, count);
+            enemies[i].draw();
+          }
+          else{
+            enemies[i].initialize(x, y, count);
+            enemies[i].draw();
+          }
+          x += 4;
+          count++;
+
+          if (count == 6) {
+            count = 1;
+          }
+        }
     }
 
     if(level == 4){
-       print_level(level);
-       delay(3000);
-       matrix.fillScreen(BLACK.to_333());
-    for(int i = 0; i < NUM_ENEMIES / 2; i++){
-      if(i % 2 == 0){
-        enemies[i].initialize(x, y, 5);
+      for(int i = 0; i < NUM_ENEMIES / 2; i++){
+        if(i % 2 == 0){
+          enemies[i].initialize(x, y, 5);
+          enemies[i].draw();
+        }
+        else{
+          enemies[i].initialize(x, y, 4);
+          enemies[i].draw();
+        }
+        x += 4;
       }
-      else{
-        enemies[i].initialize(x, y, 4);
+
+      y = 4;
+      x = 0;
+      for(int i = 0; i < NUM_ENEMIES / 2; i++){
+        if(i % 2 == 0){
+          enemies[i].initialize(x, y, 2);
+          enemies[i].draw();
+        }
+        else{
+          enemies[i].initialize(x, y, 3);
+          enemies[i].draw();
+        }
+        x += 4;
       }
-      x += 4;
-    }
-    y += 8;
-    for(int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++){
-      if(i % 2 == 0){
-        enemies[i].initialize(x, y, 2);
-      }
-      else{
-        enemies[i].initialize(x, y, 3);
-      }
-      x += 4;
-    }
     }
 
     if(level > 4){
-       print_level(level);
-       delay(3000);
-       matrix.fillScreen(BLACK.to_333());
-      for(int i = 0; i < NUM_ENEMIES ; i++){
-       int j = random(1, 8);
+      for(int i = 0; i < NUM_ENEMIES; i++) {
+        int j = random(1, 8);
         enemies[i].initialize(x, y, j);
-        x += 4;
-        if(i = NUM_ENEMIES / 2){
-          y += 8;
-        }
-      }
-    }
-
-/*      //********* this clears the display - again, after printing the level
-      for (int i = 0; i < 32; i++) {
-        for (int j = 0; j < 16; j++) {
-          matrix.drawPixel(i, j, BLACK.to_333());
-        }
-      }
-*/
-      //********** this sets the invader strengths and their xy coordinates
-      //***********this is only for level 1 (because strength is 1 for all invaders)
-      x = 0;
-      y = 0;
-      for (int i = 0; i < NUM_ENEMIES; i++) {
-        enemies[i].initialize(x, y, 1);
-        // ************* want the invader in a horizontal line, so must be side by side each other 
-        x += 4; 
-      }
-      //********** this draws the invaders 
-      for (int i = 0; i < NUM_ENEMIES; i++) {
         enemies[i].draw();
+
+        x += 4;
+
+        if (i == 7) {
+          x = 0;
+          y = 4;
+        }
       }
-
-      //******** this draws the player in the bottom middle location
-      player.set_x(16);
-      player.draw();
-
     }
+
+    player.draw();
+
+    Serial.println("Finished setupGame()");
+
+  }
     
     // advances the game simulation one step and renders the graphics
     // see spec for details of game
@@ -478,19 +493,19 @@ int y = 0;
 
     //this is the main function
     void update(int potentiometer_value, bool button_pressed) {
-      //******** this below is for testing purposes only - TO BE DELETED 
-      Invader i1(1, 2, 1);
-      i1.draw();
-
       //this below is the actual operation
 
+      // if (potentiometer_value - aValue > POTENT_DIFF) {
+      //   aValue = potentiometer_value;
+      // }
 
-
+      delay(1000);
     }
 
   private:
     int level;
     unsigned long time;
+    const int POTENT_DIFF = 40;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
@@ -502,7 +517,7 @@ int y = 0;
 
     // set up a level
     void reset_level() {
-
+      
     }
 };
 
@@ -514,6 +529,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(BUTTON_PIN_NUMBER, INPUT);
   matrix.begin();
+  game.setupGame();
 }
 
 // see https://www.arduino.cc/reference/en/language/structure/sketch/loop/
@@ -526,31 +542,29 @@ void loop() {
 
 // displays Level
 void print_level(int level) {
-  //********* im messing with the font color and size and the cursor of the level - idk if there is a standard display image
-  matrix.setCursor(8, 10);
-  matrix.setTextColor(WHITE.to_333());
-  matrix.setTextSize(5);
-
   matrix.print("Level ");
   matrix.print(level);
+
+  delay(3000);
+  matrix.fillScreen(BLACK.to_333());
 }
 
 // displays number of lives
 void print_lives(int lives) {
-  //********** again same here I'm messing with the cursor for displaying number of lives
-  matrix.setCursor(0, 31); 
-  matrix.setTextColor(WHITE.to_333());
-  matrix.setTextSize(5);
+  matrix.fillScreen(BLACK.to_333());
 
-  matrix.print("Lives: ");
+  matrix.setCursor(0, 0);
+  matrix.print("Lives  ");
   matrix.print(lives);
+
+  delay(3500);
+  matrix.fillScreen(BLACK.to_333());
 }
 
 // displays "game over"
 void game_over() {
   //****** messing again - same setting as print_level 
   matrix.setCursor(8, 10);
-  matrix.setTextColor(WHITE.to_333());
   matrix.setTextSize(5);
 
   matrix.print("Game Over");
