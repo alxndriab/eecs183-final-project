@@ -2,6 +2,13 @@
 
 Double check that everything is wired correctly. There should be two (2) wires between the Arduino and the breadboard, four (4) wires between the breadboard and the LED screen, and twelve (12) wires between the Arduino and the LED screen. (You will have more if you’ve wired the potentiometer and/or the button.)
 
+## Todo
+11/12
+- collisions and decreasing the invaders strength
+- cannonball...
+- lives and reset_level() and level_cleared()
+- time and moving player with potentiometer and space invaders 
+
 # SLIDES
 https://docs.google.com/presentation/d/1lle_tu7X_vg936_-UBO_V36wvrSDhdXmX1PCVqaTTHo/edit#slide=id.g294a140e427_0_358
 
