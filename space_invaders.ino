@@ -438,9 +438,9 @@ void loop() {
 // displays Level
 void print_level(int level) {
   //********* im messing with the font color and size and the cursor of the level - idk if there is a standard display image
-  setCursor(8, 10);
-  setTextColor(WHITE);
-  setTextSize(5);
+  matrix.setCursor(8, 10);
+  matrix.setTextColor(WHITE);
+  matrix.setTextSize(5);
 
   string displayLevel = "Level " + to_string(level);
   matrix.print(displayLevel);
@@ -449,18 +449,18 @@ void print_level(int level) {
 // displays number of lives
 void print_lives(int lives) {
   //********** again same here I'm messing with the cursor for displaying number of lives
-  setCursor(0, 31); 
+  matrix.setCursor(0, 31); 
 
   string displayLives = "Lives: " + to_string(lives);
-  matrix_print(displayLives);
+  matrix.print(displayLives);
 }
 
 // displays "game over"
 void game_over() {
   //****** messing again - same setting as print_level 
-  setCursor(8, 10);
-  setTextColor(WHITE);
-  setTextSize(5);
+  matrix.setCursor(8, 10);
+  matrix.setTextColor(WHITE);
+  matrix.setTextSize(5);
 
   matrix.print("Game Over");
 }
