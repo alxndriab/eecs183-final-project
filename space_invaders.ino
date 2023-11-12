@@ -451,7 +451,7 @@ void print_lives(int lives) {
   //********** again same here I'm messing with the cursor for displaying number of lives
   setCursor(0, 31); 
 
-  string displayLives = "Lives: " + to_strinf(lives);
+  string displayLives = "Lives: " + to_string(lives);
   matrix_print(displayLives);
 }
 
