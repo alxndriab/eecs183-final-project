@@ -17,14 +17,18 @@ const int BUTTON_PIN_NUMBER = 10;
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 
-// global constant for the width/height of the LED screen
+// globla constant for the width/height of LED screen
+//*********************** was this added later by choyce?
 const int LED_HEIGHT = 16; 
-const int LED_WIDTH = 32;  
+const int LED_WIDTH = 32; 
 
 const int INVADER_STENCIL[4][4] = { {0, 1, 1, 0}, 
                                     {1, 2, 2, 1}, 
                                     {1, 1, 1, 1}, 
                                     {1, 0, 0, 1}};
+
+const int PLAYER_STENCIL[2][3] = { {0, 1, 0}, 
+                                   {1, 1, 1}};
 
 // a global variable that represents the LED screen
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
@@ -106,7 +110,7 @@ class Invader {
     // Moves the Invader down the screen by one row
     // Modifies: y
     void move() {
-      y = y - 1;
+      y -= 1;
     }
     
 
@@ -162,18 +166,19 @@ class Invader {
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
       //left top corner point is default xy point
-
-      for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
-          if (INVADER_STENCIL[y][x] == 0) {
-            matrix.drawPixel(y, x, BLACK.to_333());
+      //******************changed from int i = 0 and int j = 0 and i < 4 and j < 4 to int i = x and int j = y and i < x + 4 and j < y + 4 so that the xy coordinates are applied to the placement of invader
+      for (int i = x; i < x + 4; i++) {
+        for (int j = y; j < y + 4; j++) {
+          if (INVADER_STENCIL[j][i] == 0) {
+            matrix.drawPixel(j, i, BLACK.to_333());
           }
-          else if (INVADER_STENCIL[y][x] == 1) {
-            matrix.drawPixel(y, x, body_color.to_333());
+          else if (INVADER_STENCIL[i][j] == 1) {
+            matrix.drawPixel(j, i, body_color.to_333());
           }
           else {
-            matrix.drawPixel(y, x, eye_color.to_333());
+            matrix.drawPixel(j, i, eye_color.to_333());
           }
+          //*********below only for testing purposes - TO BE DELETED
           Serial.print(y);
           Serial.print(",");
           Serial.print(x);
@@ -181,6 +186,7 @@ class Invader {
           Serial.println(INVADER_STENCIL[y][x]);
         }
       }
+
     }
 };
 
@@ -232,15 +238,20 @@ class Cannonball {
     }
     
     // draws the Cannonball, if it is fired
+
+    //*********** was draw_with_rgb() but cannot use that because that is private member function in Invader class
     void draw() {
       if (fired) {
-        draw_with_rgb(ORANGE);
+        matrix.drawPixel(x, y, ORANGE.to_333());
+        matrix.drawPixel(x + 1, y, ORANGE.to_333());
       }
     }
     
     // draws black where the Cannonball used to be
+    //*************the same applies here
     void erase() {
-      draw_with_rgb(BLACK);
+      matrix.drawPixel(x, y, BLACK.to_333());
+      matrix.drawPixel(x + 1, y, BLACK.to_333());
     }
 
   private:
@@ -252,8 +263,9 @@ class Cannonball {
 class Player {
   public:
     Player() {
+      //*********** should the player initialization be set to the bottom of the pixel page? as in y = 15
       x = 0;
-      y = 0;
+      y = 15;
       lives = 3;
     }
     
@@ -274,8 +286,9 @@ class Player {
     }
     
     // Modifies: lives
+    //**********should be live = 0 instead of lives-- 
     void die() {
-      lives--;
+      lives = 0;
     }
     
     // draws the Player
@@ -302,18 +315,17 @@ class Player {
     }
     
     // draws the player
+    //************** changed a bit - cannot use same format as previous draw_with_rgb because need to create a new hardcoded STENCIL for player (seen above)
     void draw_with_rgb(Color color) {
-      for (int y = 0; y < 2; y++) {
-        for (int x = 0; x < 3; x++) {
-          if (PLAYER_STENCIL[y][x] == 0) {
-            matrix.drawPixel(y, x, BLACK.to_333());
-          }
-          else if (PLAYER_STENCIL[y][x] == 1) {
-            matrix.drawPixel(y, x, body_color.to_333());
+      for (int i = x; i < x + 3; i++) {
+        for (int j = y; j < y + 3; j++) {
+          if (PLAYER_STENCIL[i][j] == 0) {
+            matrix.drawPixel(j, i, BLACK.to_333());
           }
           else {
-            matrix.drawPixel(y, x, eye_color.to_333());
+            matrix.drawPixel(j, i, color.to_333());
           }
+          //**********below purely for testing purposes - TO BE DELETED
           Serial.print(y);
           Serial.print(",");
           Serial.print(x);
@@ -334,6 +346,42 @@ class Game {
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
     void setupGame() {
+      //**********this turns on the display
+      matrix.begin();
+      //********* this clears the display initially
+      for (int i = 0; i < 32; i++) {
+        for (int j = 0; j < 16; j++) {
+          matrix.drawPixel(i, j, BLACK.to_333());
+        }
+      }
+      //note: this below is level 1 specific code - MUST CHANGE FOR LEVEL 2
+      print_level(1);
+
+      //********* this clears the display - again, after printing the level
+      for (int i = 0; i < 32; i++) {
+        for (int j = 0; j < 16; j++) {
+          matrix.drawPixel(i, j, BLACK.to_333());
+        }
+      }
+
+      //********** this sets the invader strengths and their xy coordinates
+      //***********this is only for level 1 (because strength is 1 for all invaders)
+      x = 0;
+      y = 0;
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        enemies[i].initialize(x, y, 1);
+        // ************* want the invader in a horizontal line, so must be side by side each other 
+        x += 4; 
+      }
+      //********** this draws the invaders 
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        enemies[i].draw();
+      }
+
+      //******** this draws the player in the bottom middle location
+      player.set_x(16);
+      player.draw();
+
     }
     
     // advances the game simulation one step and renders the graphics
@@ -342,8 +390,14 @@ class Game {
 
     //this is the main function
     void update(int potentiometer_value, bool button_pressed) {
+      //******** this below is for testing purposes only - TO BE DELETED 
       Invader i1(1, 2, 1);
       i1.draw();
+
+      //this below is the actual operation
+
+
+
     }
 
   private:
@@ -355,10 +409,12 @@ class Game {
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
+      //******** struggling to find a way to detect that all invader is defeated; one way is to detect if all the pixel in matrix is BLACK - but don't know where to get the color of the pixels in matrix...
     }
 
     // set up a level
     void reset_level() {
+
     }
 };
 
@@ -382,12 +438,31 @@ void loop() {
 
 // displays Level
 void print_level(int level) {
+  //********* im messing with the font color and size and the cursor of the level - idk if there is a standard display image
+  setCursor(8, 10);
+  setTextColor(WHITE);
+  setTextSize(5);
+
+  string displayLevel = "Level " + to_string(level);
+  matrix.print(displayLevel);
 }
 
 // displays number of lives
 void print_lives(int lives) {
+  //********** again same here I'm messing with the cursor for displaying number of lives
+  setCursor(0, 31); 
+
+  string displayLives = "Lives: " + to_strinf(lives);
+  matrix_print(displayLives);
 }
 
 // displays "game over"
 void game_over() {
+  //****** messing again - same setting as print_level 
+  setCursor(8, 10);
+  setTextColor(WHITE);
+  setTextSize(5);
+
+  matrix.print("Game Over");
 }
+
