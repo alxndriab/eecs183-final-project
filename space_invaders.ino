@@ -445,13 +445,13 @@ int y = 0;
       }
     }
 
-      //********* this clears the display - again, after printing the level
+/*      //********* this clears the display - again, after printing the level
       for (int i = 0; i < 32; i++) {
         for (int j = 0; j < 16; j++) {
           matrix.drawPixel(i, j, BLACK.to_333());
         }
       }
-
+*/
       //********** this sets the invader strengths and their xy coordinates
       //***********this is only for level 1 (because strength is 1 for all invaders)
       x = 0;
