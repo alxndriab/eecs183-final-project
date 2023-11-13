@@ -77,10 +77,19 @@ Keep track of the last time you moved the enemies, then keep checking to see if 
 unsigned long time = millis();
 const int MIN_MOVE_ENEMY = 2000;
 const int MIN_MOVE_PLAYER = 3000;
+const int MIN_POTENT_DIFF = 40;
 
-if (time > MIN_MOVE_ENEMY) {
-  moveEnemyRowDown(enemy[i]);
-  time = millis();
+update(potentiometer_value, ...) {
+  if (millis() - time > MIN_MOVE_ENEMY) {
+    moveEnemyRowDown(enemy[i]);
+    time = millis();
+  }
+  
+  if (potentiometer_value - GET-CURRENT-POTENTIOMETER-VALUE > MIN_POTENT_DIFF) {
+    player.set_x -= 1;
+    # need to redraw
+    # player.draw();
+  }
 }
 
 **Update**
