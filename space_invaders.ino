@@ -520,6 +520,29 @@ class Game {
         level++;
         setupGame();
       }
+
+      //COLLISSIONNNNNN
+      // cannonball hits invader 
+      for (int i = 0; i < NUM_STRENGTH; i++) {
+        if (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) {
+          if (((enemies[i].get_y() + 1) == ball.get_y()) && (enemies[i].get_strength() > 0)) {
+            ball.hit();
+            enemies[i].hit();
+          }
+        }
+        else if (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) {
+          if (((enemies[i].get_y() + 1) == ball.get_y()) && (enemies[i].get_strength() > 0)) {
+            ball.hit();
+            enemies[i].hit();
+          }
+        }
+      }
+
+      // player dies
+      if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
+        player.die();
+        reset_level();
+      }
     }
 
   private:
