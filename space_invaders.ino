@@ -495,11 +495,31 @@ class Game {
     void update(int potentiometer_value, bool button_pressed) {
       //this below is the actual operation
 
-      // if (potentiometer_value - aValue > POTENT_DIFF) {
-      //   aValue = potentiometer_value;
-      // }
+      int time = 0;
+      if (millis() - time > MIN_MOVE_ENEMY) {
+        for (int i = 0; i < NUM_ENEMIES; i++) {
+          enemies[i].move();
+          enemies[i].erase();
+          enemies[i].draw();
+        }
+        time = millis();
+      }
 
-      delay(1000);
+      delay(2000);
+      int potentiometer_value1 = analogRead(POTENTIOMETER_PIN_NUMBER);
+
+      if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
+        player.erase();
+        player.set_x(player.get_x() - 1);
+        player.draw();
+      }
+      
+      
+
+      if (level_cleared()) {
+        level++;
+        setupGame();
+      }
     }
 
   private:
