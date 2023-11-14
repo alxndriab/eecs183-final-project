@@ -512,7 +512,18 @@ class Game {
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
-      //******** struggling to find a way to detect that all invader is defeated; one way is to detect if all the pixel in matrix is BLACK - but don't know where to get the color of the pixels in matrix...
+      int count = 0;
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_strength() == 0) {
+          count++;
+        }
+      }
+      if (count == NUM_ENEMIES) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     // set up a level
