@@ -110,7 +110,7 @@ class Invader {
     // Moves the Invader down the screen by one row
     // Modifies: y
     void move() {
-      y -= 1;
+      y++;
     }
     
 
@@ -221,8 +221,8 @@ class Cannonball {
     // Modifies: y, fired
     void move() {
       fired = true;
-      y += 1;
-      if (y > LED_HEIGHT) {
+      y--;
+      if (y < 0) {
         reset();
       }
     }
