@@ -112,7 +112,6 @@ class Invader {
     void move() {
       y++;
     }
-    
 
     // draws the Invader if its strength is greater than 0
     // calls: draw_with_rgb
@@ -221,8 +220,8 @@ class Cannonball {
     // Modifies: y, fired
     void move() {
       fired = true;
-      y--;
-      if (y < 0) {
+      y += 1;
+      if (y > LED_HEIGHT) {
         reset();
       }
     }
@@ -233,8 +232,6 @@ class Cannonball {
     }
     
     // draws the Cannonball, if it is fired
-
-    //*********** was draw_with_rgb() but cannot use that because that is private member function in Invader class
     void draw() {
       if (fired) {
         matrix.drawPixel(x, y, ORANGE.to_333());
@@ -346,7 +343,7 @@ class Game {
     // Modifies: global variable matrix
     void setupGame() {
       //! MOVE LEVEL SOMEWHERE ELSE
-      level = 100;
+      level = 2;
 
       matrix.fillScreen(BLACK.to_333());
       int x = 0;
@@ -384,7 +381,7 @@ class Game {
         y = 4;
         x = 0;
 
-        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+        for(int i = 8; i < NUM_ENEMIES / 2 - 1; i++){
           if(i % 2 == 0){
             enemies[i].initialize(x, y, 2);
             enemies[i].draw();
@@ -420,7 +417,7 @@ class Game {
         y = 4;
         x = 0;
 
-        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+        for(int i = 8; i < NUM_ENEMIES / 2 - 1; i++){
           if(i % 2 == 0){
             enemies[i].initialize(x, y, count);
             enemies[i].draw();
@@ -453,7 +450,8 @@ class Game {
 
       y = 4;
       x = 0;
-      for(int i = 0; i < NUM_ENEMIES / 2; i++){
+      
+      for(int i = 8; i < NUM_ENEMIES / 2 - 1; i++){
         if(i % 2 == 0){
           enemies[i].initialize(x, y, 2);
           enemies[i].draw();
@@ -493,28 +491,35 @@ class Game {
 
     //this is the main function
     void update(int potentiometer_value, bool button_pressed) {
-      //this below is the actual operation
-
-      int time = 0;
       if (millis() - time > MIN_MOVE_ENEMY) {
-        for (int i = 0; i < NUM_ENEMIES; i++) {
-          enemies[i].move();
+        for (int i = 7; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
+          enemies[i].move();
+          enemies[i].draw();
+        }
+        for (int i = 0; i < NUM_ENEMIES / 2 - 1; i++) {
+          enemies[i].erase();
+          enemies[i].move();
           enemies[i].draw();
         }
         time = millis();
       }
 
-      delay(2000);
+      // ball.fire(player.get_x(), player.get_y());
+
+      delay(500);
       int potentiometer_value1 = analogRead(POTENTIOMETER_PIN_NUMBER);
 
       if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
         player.erase();
-        player.set_x(player.get_x() - 1);
+        if (potentiometer_value - potentiometer_value1 < 0) {
+          player.set_x(player.get_x() + 2);
+        }
+        else {
+          player.set_x(player.get_x() - 2);
+        }
         player.draw();
       }
-      
-      
 
       if (level_cleared()) {
         level++;
@@ -523,7 +528,7 @@ class Game {
 
       //COLLISSIONNNNNN
       // cannonball hits invader 
-      for (int i = 0; i < NUM_STRENGTH; i++) {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
         if (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) {
           if (((enemies[i].get_y() + 1) == ball.get_y()) && (enemies[i].get_strength() > 0)) {
             ball.hit();
@@ -536,44 +541,32 @@ class Game {
             enemies[i].hit();
           }
         }
-      }
-
       // player dies
-      if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
-        player.die();
-        reset_level();
+        if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
+          player.die();
+          reset_level();
+        }
       }
     }
 
   private:
     int level;
-    unsigned long time;
-    const int POTENT_DIFF = 40;
+    unsigned long time = millis();
+    const int MIN_MOVE_ENEMY = 4000;
+    const int MIN_MOVE_PLAYER = 3000;
+    const int MIN_POTENT_DIFF = 40;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
-      int count = 0;
-      for (int i = 0; i < NUM_ENEMIES; i++) {
-        if (enemies[i].get_strength() == 0) {
-          count++;
-        }
-      }
-      if (count == NUM_ENEMIES) {
-        return true;
-      }
-      else {
-        return false;
-      }
+      //******** struggling to find a way to detect that all invader is defeated; one way is to detect if all the pixel in matrix is BLACK - but don't know where to get the color of the pixels in matrix...
     }
 
     // set up a level
     void reset_level() {
-      //not sure if this is right
-      player.die();
-      setupGame();
+      
     }
 };
 
@@ -598,7 +591,7 @@ void loop() {
 
 // displays Level
 void print_level(int level) {
-  matrix.print("Level ");
+  matrix.print("Level  ");
   matrix.print(level);
 
   delay(3000);
