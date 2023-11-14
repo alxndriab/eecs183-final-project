@@ -91,8 +91,8 @@ update(potentiometer_value, ...) {
     # player.draw();
   }
 }
-
-**Update**
+```
+**inside update()**
 Given this description, the key part of your code will need to do the following:
 - Update the position of the player based on the value of the potentiometer
 - Update the position of the cannonball, including detecting if a new cannonball is being fired
@@ -102,7 +102,3 @@ Given this description, the key part of your code will need to do the following:
 - Detect if all the invaders are killed; if so, start the next level
 
 //go back to if statement again
-```
-
-
-
