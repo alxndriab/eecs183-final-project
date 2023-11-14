@@ -528,7 +528,9 @@ class Game {
 
     // set up a level
     void reset_level() {
-      
+      //not sure if this is right
+      player.die();
+      setupGame();
     }
 };
 
