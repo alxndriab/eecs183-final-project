@@ -524,6 +524,39 @@ class Game {
         player.draw();
       }
 
+      if (button_pressed) {
+        ball.fired(player.get_x() + 1, player.get_y());
+        ball.draw();
+        ball.erase(); 
+        
+      }
+
+      if (fired) {
+        for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) {
+          if (((enemies[i].get_y() + 1) == ball.get_y()) && (enemies[i].get_strength() > 0)) {
+            ball.hit();
+            enemies[i].hit();
+          }
+        }
+        else if (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) {
+          if (((enemies[i].get_y() + 1) == ball.get_y()) && (enemies[i].get_strength() > 0)) {
+            ball.hit();
+            enemies[i].hit();
+          }
+        }
+        }
+        
+        ball.move();
+        ball.draw();
+      }
+
+      if (lives <= 0) {
+        game_over();
+        reset_level();
+      }
+      
+
       if (level_cleared()) {
         level++;
         setupGame();
