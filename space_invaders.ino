@@ -14,6 +14,13 @@ const uint8_t C = A2;
 const int POTENTIOMETER_PIN_NUMBER = 5;
 const int BUTTON_PIN_NUMBER = 10;
 
+const int numReadings = 10;
+
+int readings[numReadings];  // the readings from the analog input
+int readIndex = 0;          // the index of the current reading
+int total = 0;              // the running total
+int average = 0;            // the average
+
 // global constant for the number of Invaders in the game
 const int NUM_ENEMIES = 16;
 
@@ -275,8 +282,14 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      if (x_arg + 2 <= LED_WIDTH && x_arg >= 0) {
+      if (x_arg + 2 <= LED_WIDTH && x_arg >= -1) {
         x = x_arg;
+      }
+    }
+
+    void set_lives(int l) {
+      if (l < 4 && l > 0) {
+        lives = l;
       }
     }
     
@@ -346,6 +359,13 @@ class Game {
     // sets up a new game of Space Invaders
     // Modifies: global variable matrix
     void setupGame() {
+      if (player.get_lives() == 0) {
+        game_over();
+        player.set_lives(3);
+        level = 1;
+        delay(10000);
+      }
+
       matrix.fillScreen(BLACK.to_333());
       matrix.setCursor(0,0);
 
@@ -355,11 +375,7 @@ class Game {
       print_level(level);
       print_lives(player.get_lives());
 
-      if (player.get_lives() == 0) {
-        game_over();
-      }
-
-      else if(level == 1){
+      if(level == 1){
         for(int i = 0; i < NUM_ENEMIES / 2; i++){
           enemies[i].initialize(x, y, 1);
           enemies[i].draw();
@@ -468,8 +484,6 @@ class Game {
     // advances the game simulation one step and renders the graphics
     // see spec for details of game
     // Modifies: global variable matrix
-
-    //this is the main function
     void update(int potentiometer_value, bool button_pressed) {
       if (millis() - time1 > MIN_MOVE_ENEMY) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
@@ -498,34 +512,35 @@ class Game {
         //! collisions b/w ball and invader NOT working
 
         if (ball.has_been_fired()) {
-          if ((enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
+          if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
             }
           }
-          else if ((enemies[i].get_y() + 1 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 1 == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
+          else if ((enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 2 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
             }
           }
-          else if ((enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x()) {
+          else if ((enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
             }
           }
-          else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x()) {
+          else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
             }
           }
+        
 
           if (millis() - time2 > MIN_MOVE_BALL) {
             ball.erase();
@@ -543,26 +558,29 @@ class Game {
         }
       }
 
-      delay(100);
-      int potentiometer_value1 = analogRead(POTENTIOMETER_PIN_NUMBER);
+      total = total - readings[readIndex];
+      // read from the sensor:
+      readings[readIndex] = analogRead(POTENTIOMETER_PIN_NUMBER);
+      // add the reading to the total:
+      total = total + readings[readIndex];
+      // advance to the next position in the array:
+      readIndex = readIndex + 1;
 
-      if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
+      // if we're at the end of the array...
+      if (readIndex >= numReadings) {
+        // ...wrap around to the beginning:
+        readIndex = 0;
+      }
+
+      // calculate the average:
+      average = total / numReadings;
+      // send it to the computer as ASCII digits
+      Serial.println(average);
+
+      delay(50);
       player.erase();
-      if (potentiometer_value - potentiometer_value1 < 0) {
-        player.set_x(player.get_x() + 2);
-      }
-      else {
-        player.set_x(player.get_x() - 2);
-      }
+      player.set_x(average / 16);
       player.draw();
-      }
-
-
-      Serial.print("Potent initial value: ");
-      Serial.println(potentiometer_value);
-
-      Serial.print("Potent new value: ");
-      Serial.println(potentiometer_value1);
 
       if (level_cleared()) {
         level++;
@@ -575,9 +593,9 @@ class Game {
     unsigned long time1 = millis();
     unsigned long time2 = millis();
     const int MIN_MOVE_ENEMY = 6000;
-    const int MIN_MOVE_BALL = 500;
-    const int MIN_MOVE_PLAYER = 500;
-    const int MIN_POTENT_DIFF = 50;
+    const int MIN_MOVE_BALL = 250;
+    const int MIN_MOVE_PLAYER = 1000;
+    const int MIN_POTENT_DIFF = 30;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES] = {};
@@ -617,6 +635,9 @@ void setup() {
   Serial.begin(9600);
   pinMode(BUTTON_PIN_NUMBER, INPUT);
   matrix.begin();
+  for (int thisReading = 0; thisReading < numReadings; thisReading++) {
+    readings[thisReading] = 0;
+  }
   game.setupGame();
 }
 
@@ -653,8 +674,6 @@ void print_lives(int lives) {
 
 void game_over() {
   matrix.fillScreen(BLACK.to_333());
-  matrix.setCursor(15,0);
-  delay(3000);
+  matrix.setCursor(7,0);
   matrix.print("Game Over");
-  delay(10000);
 }
