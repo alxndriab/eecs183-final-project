@@ -194,10 +194,10 @@ class Cannonball {
     
     // resets private data members to initial values
     void reset() {
+      erase();
       x = 0;
       y = 0;
       fired = false;
-      erase();
     }
     
     // getters
@@ -275,13 +275,13 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      if (x_arg < LED_WIDTH && x_arg >= 0) {
+      if (x_arg <= LED_WIDTH && x_arg >= 0) {
         x = x_arg;
       }
     }
     
     // Modifies: lives
-    void die() { 
+    void die() {
       if (lives > 0) {
         lives--;
       }
@@ -488,7 +488,7 @@ class Game {
       if (button_pressed) {
         if (!(ball.has_been_fired())) {
           ball.reset();
-          ball.fire(player.get_x() + 1, player.get_y() - 1);
+          ball.fire(player.get_x() + 1, player.get_y() - 2);
           ball.draw();
         }
       }
@@ -504,7 +504,7 @@ class Game {
               break;
             }
           }
-          else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
+          else if ((enemies[i].get_y() + 1 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 1 == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
@@ -520,29 +520,34 @@ class Game {
           }
         }
 
-        if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
-          reset_level();
+        if (enemies[i].get_y() + 3 == LED_HEIGHT - 2) {
+          if (enemies[i].get_strength() > 0) {
+            reset_level();
+            break;
+          }
         }
       }
 
-      //! FIX PLAYER MOVEMENT
+      delay(500);
       int potentiometer_value1 = analogRead(POTENTIOMETER_PIN_NUMBER);
+
+      if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
+      player.erase();
+      if (potentiometer_value - potentiometer_value1 < 0) {
+        player.set_x(player.get_x() + 2);
+      }
+      else {
+        player.set_x(player.get_x() - 2);
+      }
+      player.draw();
+      }
+
+
       Serial.print("Potent initial value: ");
       Serial.println(potentiometer_value);
 
       Serial.print("Potent new value: ");
       Serial.println(potentiometer_value1);
-
-      if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
-        player.erase();
-        if (potentiometer_value - potentiometer_value1 < 0) {
-          player.set_x(player.get_x() + 2);
-        }
-        else {
-          player.set_x(player.get_x() - 2);
-        }
-        player.draw();
-      }
 
       if (level_cleared()) {
         level++;
@@ -556,8 +561,8 @@ class Game {
     unsigned long time2 = millis();
     const int MIN_MOVE_ENEMY = 6000;
     const int MIN_MOVE_BALL = 500;
-    const int MIN_MOVE_PLAYER = 3000;
-    const int MIN_POTENT_DIFF = 100;
+    const int MIN_MOVE_PLAYER = 500;
+    const int MIN_POTENT_DIFF = 50;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES];
@@ -582,10 +587,10 @@ class Game {
     // set up a level
     void reset_level() {
       player.die();
-      setupGame();
       if (player.get_lives() < 1) {
-        level = 0;
+        level = 1;
       }
+      setupGame();
     }
 };
 
@@ -633,6 +638,8 @@ void print_lives(int lives) {
 
 void game_over() {
   matrix.fillScreen(BLACK.to_333());
+  matrix.setCursor(0,0);
+  delay(1000);
   matrix.print("Game Over");
-  //exit loop
+  delay(4000);
 }
