@@ -526,7 +526,6 @@ class Game {
               break;
             }
           }
-        }
 
           if (millis() - time2 > MIN_MOVE_BALL) {
             ball.erase();
