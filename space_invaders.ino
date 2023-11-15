@@ -496,8 +496,9 @@ class Game {
       for (int i = 0; i < NUM_ENEMIES; i++) {
 
         //! collisions b/w ball and invader NOT working
+
         if (ball.has_been_fired()) {
-          if (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) {
+          if ((enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 3 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
@@ -518,6 +519,14 @@ class Game {
               break;
             }
           }
+          else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x()) {
+            if (enemies[i].get_strength() > 0) {
+              ball.hit();
+              enemies[i].hit();
+              break;
+            }
+          }
+        }
 
           if (millis() - time2 > MIN_MOVE_BALL) {
             ball.erase();
