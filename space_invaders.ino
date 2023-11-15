@@ -275,7 +275,7 @@ class Player {
     
     // setter
     void set_x(int x_arg) {
-      if (x_arg <= LED_WIDTH && x_arg >= 0) {
+      if (x_arg + 2 <= LED_WIDTH && x_arg >= 0) {
         x = x_arg;
       }
     }
@@ -355,7 +355,7 @@ class Game {
       print_level(level);
       print_lives(player.get_lives());
 
-      if (level == 0) {
+      if (player.get_lives() == 0) {
         game_over();
       }
 
@@ -528,7 +528,7 @@ class Game {
         }
       }
 
-      delay(500);
+      delay(100);
       int potentiometer_value1 = analogRead(POTENTIOMETER_PIN_NUMBER);
 
       if (abs(potentiometer_value - potentiometer_value1) > MIN_POTENT_DIFF) {
@@ -565,7 +565,7 @@ class Game {
     const int MIN_POTENT_DIFF = 50;
     Player player;
     Cannonball ball;
-    Invader enemies[NUM_ENEMIES];
+    Invader enemies[NUM_ENEMIES] = {};
 
     // check if Player defeated all Invaders in current level
     bool level_cleared() {
@@ -638,8 +638,8 @@ void print_lives(int lives) {
 
 void game_over() {
   matrix.fillScreen(BLACK.to_333());
-  matrix.setCursor(0,0);
-  delay(1000);
+  matrix.setCursor(15,0);
+  delay(3000);
   matrix.print("Game Over");
-  delay(4000);
+  delay(10000);
 }
