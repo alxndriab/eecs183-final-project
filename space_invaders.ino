@@ -504,7 +504,7 @@ class Game {
               break;
             }
           }
-          else if (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) {
+          else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
@@ -520,8 +520,7 @@ class Game {
           }
         }
 
-        else if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
-          player.die();
+        if ((enemies[i].get_y() + 3 == LED_HEIGHT) || (enemies[i].get_y() + 3 == LED_HEIGHT - 3)) {
           reset_level();
         }
       }
