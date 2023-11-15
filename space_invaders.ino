@@ -281,8 +281,10 @@ class Player {
     }
     
     // Modifies: lives
-    void die() {
-      lives--;
+    void die() { 
+      if (lives > 0) {
+        lives--;
+      }
     }
     
     // draws the Player
