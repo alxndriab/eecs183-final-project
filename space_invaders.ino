@@ -363,8 +363,10 @@ class Game {
         game_over();
         player.set_lives(3);
         level = 1;
-        delay(10000);
+        delay(5000);
+
       }
+      
 
       matrix.fillScreen(BLACK.to_333());
       matrix.setCursor(0,0);
@@ -485,19 +487,35 @@ class Game {
     // see spec for details of game
     // Modifies: global variable matrix
     void update(int potentiometer_value, bool button_pressed) {
+
       if (millis() - time1 > MIN_MOVE_ENEMY) {
+
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            enemies[i].erase();
+            enemies[i].move();
+            enemies[i].draw();
+          }
+        
+        int count = 0;
+        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_strength() == 0) {
+          count++;
+          }
+        }
+
+        if (count == NUM_ENEMIES / 2) {
+          for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].erase();
           enemies[i].move();
           enemies[i].draw();
+          }
         }
-        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].erase();
-          enemies[i].move();
-          enemies[i].draw();
-        }
+
+
         time1 = millis();
       }
+
+
 
       if (button_pressed) {
         if (!(ball.has_been_fired())) {
@@ -557,30 +575,33 @@ class Game {
           }
         }
       }
+     for (int i = 0; i < NUM_ENEMIES; i++) {
+      if (enemies[i].get_y() + 3 != LED_HEIGHT - 2) {
+          total = total - readings[readIndex];
+          // read from the sensor:
+          readings[readIndex] = analogRead(POTENTIOMETER_PIN_NUMBER);
+          // add the reading to the total:
+          total = total + readings[readIndex];
+          // advance to the next position in the array:
+          readIndex = readIndex + 1;
 
-      total = total - readings[readIndex];
-      // read from the sensor:
-      readings[readIndex] = analogRead(POTENTIOMETER_PIN_NUMBER);
-      // add the reading to the total:
-      total = total + readings[readIndex];
-      // advance to the next position in the array:
-      readIndex = readIndex + 1;
+          // if we're at the end of the array...
+          if (readIndex >= numReadings) {
+            // ...wrap around to the beginning:
+            readIndex = 0;
+          }
 
-      // if we're at the end of the array...
-      if (readIndex >= numReadings) {
-        // ...wrap around to the beginning:
-        readIndex = 0;
+          // calculate the average:
+          average = total / numReadings;
+          // send it to the computer as ASCII digits
+          Serial.println(average);
+
+          //delay(50);
+          player.erase();
+          player.set_x(average / 32);
+          player.draw();
       }
-
-      // calculate the average:
-      average = total / numReadings;
-      // send it to the computer as ASCII digits
-      Serial.println(average);
-
-      delay(50);
-      player.erase();
-      player.set_x(average / 32);
-      player.draw();
+     }
 
       if (level_cleared()) {
         level++;
@@ -593,7 +614,7 @@ class Game {
     unsigned long time1 = millis();
     unsigned long time2 = millis();
     const int MIN_MOVE_ENEMY = 6000;
-    const int MIN_MOVE_BALL = 250;
+    const int MIN_MOVE_BALL = 30;
     const int MIN_MOVE_PLAYER = 1000;
     const int MIN_POTENT_DIFF = 30;
     Player player;
@@ -652,7 +673,7 @@ void loop() {
 // displays Level
 void print_level(int level) {
   matrix.fillScreen(BLACK.to_333());
-
+  matrix.setCursor(2, 0);
   matrix.print("Level  ");
   matrix.print(level);
 
@@ -664,16 +685,16 @@ void print_level(int level) {
 void print_lives(int lives) {
   matrix.fillScreen(BLACK.to_333());
 
-  matrix.setCursor(0, 0);
+  matrix.setCursor(2, 0);
   matrix.print("Lives  ");
   matrix.print(lives);
 
-  delay(3500);
+  delay(3000);
   matrix.fillScreen(BLACK.to_333());
 }
 
 void game_over() {
   matrix.fillScreen(BLACK.to_333());
-  matrix.setCursor(7,0);
+  matrix.setCursor(5,0);
   matrix.print("Game Over");
 }
