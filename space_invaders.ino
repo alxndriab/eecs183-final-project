@@ -579,7 +579,7 @@ class Game {
 
       delay(50);
       player.erase();
-      player.set_x(average / 16);
+      player.set_x(average / 32);
       player.draw();
 
       if (level_cleared()) {
