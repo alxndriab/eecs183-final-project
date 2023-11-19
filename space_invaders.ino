@@ -565,6 +565,28 @@ class Game {
               break;
             }
           }
+          else if ((enemies[i].get_y() + 1 == ball.get_y()) || (enemies[i].get_y() + 1 == ball.get_y() + 1)) {
+            if (enemies[i].get_x() == ball.get_x()) {
+              ball.hit();
+              enemies[i].hit();
+              break;
+            }
+            else if (enemies[i].get_x() + 1 == ball.get_x()) {
+              ball.hit();
+              enemies[i].hit();
+              break;
+            }
+            else if (enemies[i].get_x() + 2 == ball.get_x()) {
+              ball.hit();
+              enemies[i].hit();
+              break;
+            }
+            else if (enemies[i].get_x() + 3 == ball.get_x()) {
+              ball.hit();
+              enemies[i].hit();
+              break;
+            }
+          }
         
 
           if (millis() - time2 > MIN_MOVE_BALL) {
