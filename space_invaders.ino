@@ -379,20 +379,20 @@ class Game {
       print_lives(player.get_lives());
 
       // settting up level
-      if(level == 1){
-        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+      if (level == 1) {
+        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].initialize(x, y, 1);
           enemies[i].draw();
           x += 4;
         }
       }
-      else if(level == 2){
-        for(int i = 0; i < NUM_ENEMIES / 2; i++){
-          if(i % 2 == 0){
+      else if (level == 2) {
+        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+          if (i % 2 == 0) {
             enemies[i].initialize(x, y, 1);
             enemies[i].draw();
           }
-          else{
+          else {
             enemies[i].initialize(x, y, 2);
             enemies[i].draw();
           }
@@ -403,48 +403,49 @@ class Game {
         x = 0;
 
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          if(i % 2 == 0){
+          if (i % 2 == 0) {
             enemies[i].initialize(x, y, 2);
             enemies[i].draw();
           }
-          else{
+          else {
             enemies[i].initialize(x, y, 1);
             enemies[i].draw();
           }
           x += 4;
         }
       }
-      else if(level == 3){
+    else if (level == 3) {
       int count = 1;
-      for(int i = 0; i < NUM_ENEMIES; i++){
-          if (i == NUM_ENEMIES / 2) {
-            y = 4;
-            x = 0;
-          }
-          if(i % 2 == 0){
-            enemies[i].initialize(x, y, count);
-            enemies[i].draw();
-          }
-          else{
-            enemies[i].initialize(x, y, count);
-            enemies[i].draw();
-          }
-          x += 4;
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (i == NUM_ENEMIES / 2) {
+          y = 4;
+          x = 0;
+        }
+        if (i % 2 == 0) {
+          enemies[i].initialize(x, y, count);
+          enemies[i].draw();
+        }
+        else {
+          enemies[i].initialize(x, y, count);
+          enemies[i].draw();
+        }
+        x += 4;
 
-          count++;
+        count++;
 
-          if (count == 6) {
-            count = 1;
-          }
+        if (count == 6) {
+          count = 1;
         }
       }
-      else if(level == 4){
-      for(int i = 0; i < NUM_ENEMIES / 2; i++){
-        if(i % 2 == 0){
+    }
+      
+    else if (level == 4) {
+      for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+        if (i % 2 == 0) {
           enemies[i].initialize(x, y, 5);
           enemies[i].draw();
         }
-        else{
+        else {
           enemies[i].initialize(x, y, 4);
           enemies[i].draw();
         }
@@ -455,31 +456,31 @@ class Game {
       x = 0;
       
       for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-        if(i % 2 == 0){
+        if (i % 2 == 0) {
           enemies[i].initialize(x, y, 2);
           enemies[i].draw();
         }
-        else{
+        else {
           enemies[i].initialize(x, y, 3);
           enemies[i].draw();
         }
         x += 4;
       }
+    }
 
-      else if(level > 4){
-        for(int i = 0; i < NUM_ENEMIES; i++) {
-          randomSeed(analogRead(0));
-          int j = random(1, 8);
-          enemies[i].initialize(x, y, j);
-          enemies[i].draw();
+    else if (level > 4) {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        int j = random(1, 8);
+        enemies[i].initialize(x, y, j);
+        enemies[i].draw();
 
-          x += 4;
+        x += 4;
 
-          if (i == 7) {
-            x = 0;
-            y = 4;
-          }
+        if (i == 7) {
+          x = 0;
+          y = 4;
         }
+      }
     }
 
     player.draw();
@@ -500,8 +501,8 @@ class Game {
       
       int count = 0;
       for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-      if (enemies[i].get_strength() == 0) {
-        count++;
+        if (enemies[i].get_strength() == 0) {
+          count++;
         }
       }
 
@@ -527,7 +528,7 @@ class Game {
 
     // checking for collisions between invaders and cannonball
     for (int i = 0; i < NUM_ENEMIES; i++) {
-        if (ball.has_been_fired()) {
+      if (ball.has_been_fired()) {
         if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
           if (enemies[i].get_strength() > 0) {
             ball.hit();
@@ -696,6 +697,7 @@ void setup() {
   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;
   }
+  randomSeed(analogRead(4));
   game.setupGame();
 }
 
