@@ -378,15 +378,9 @@ class Game {
       print_lives(player.get_lives());
 
       if(level == 1){
-        for (int i = NUM_ENEMIES; i < NUM_ENEMIES; i++) {
-          if(i < 8) {
-            enemies[i].initialize(x, y, 2);
-            enemies[i].draw();
-          }
-          else {
-            enemies[i].initialize(x, y, 0);
-            enemies[i].draw();
-          }
+        for(int i = 0; i < NUM_ENEMIES / 2; i++){
+          enemies[i].initialize(x, y, 1);
+          enemies[i].draw();
           x += 4;
         }
       }
@@ -527,16 +521,14 @@ class Game {
       if (button_pressed) {
         if (!(ball.has_been_fired())) {
           ball.reset();
-          ball.fire(player.get_x() + 1, player.get_y() - 2);
+          ball.fire(player.get_x() + 1, player.get_y() - 1);
           ball.draw();
         }
       }
       
       for (int i = 0; i < NUM_ENEMIES; i++) {
 
-        //! collisions b/w ball and invader NOT working
-
-        if (ball.has_been_fired()) {
+         if (ball.has_been_fired()) {
           if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
             if (enemies[i].get_strength() > 0) {
               ball.hit();
@@ -567,27 +559,34 @@ class Game {
           }
           else if ((enemies[i].get_y() + 1 == ball.get_y()) || (enemies[i].get_y() + 1 == ball.get_y() + 1)) {
             if (enemies[i].get_x() == ball.get_x()) {
+              if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
+              }
             }
             else if (enemies[i].get_x() + 1 == ball.get_x()) {
+              if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
+              }
             }
             else if (enemies[i].get_x() + 2 == ball.get_x()) {
+              if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
+              }
             }
             else if (enemies[i].get_x() + 3 == ball.get_x()) {
+              if (enemies[i].get_strength() > 0) {
               ball.hit();
               enemies[i].hit();
               break;
+              }
             }
           }
-        
 
           if (millis() - time2 > MIN_MOVE_BALL) {
             ball.erase();
@@ -627,7 +626,7 @@ class Game {
 
           //delay(50);
           player.erase();
-          player.set_x(average / 32);
+          player.set_x(average / 32 - 1);
           player.draw();
       }
      }
@@ -643,11 +642,11 @@ class Game {
     unsigned long time1 = millis();
     unsigned long time2 = millis();
     //changed from 6000 to 4000
-    const int MIN_MOVE_ENEMY = 3000;
+    const int MIN_MOVE_ENEMY = 2500;
     //change from 30 to 20
     const int MIN_MOVE_BALL = 20;
     const int MIN_MOVE_PLAYER = 1000;
-    const int MIN_POTENT_DIFF = 30;
+    const int MIN_POTENT_DIFF = 20;
     Player player;
     Cannonball ball;
     Invader enemies[NUM_ENEMIES] = {};
@@ -675,6 +674,10 @@ class Game {
       if (player.get_lives() < 1) {
         level = 1;
       }
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        enemies[i].initialize(0, 0, 0);
+      }
+      ball.reset();
       setupGame();
     }
 };
