@@ -467,6 +467,7 @@ class Game {
 
     else if(level > 4){
       for(int i = 0; i < NUM_ENEMIES; i++) {
+        //randSeed(seed);
         int j = random(1, 8);
         enemies[i].initialize(x, y, j);
         enemies[i].draw();
@@ -613,8 +614,10 @@ class Game {
     int level;
     unsigned long time1 = millis();
     unsigned long time2 = millis();
-    const int MIN_MOVE_ENEMY = 6000;
-    const int MIN_MOVE_BALL = 30;
+    //changed from 6000 to 4000
+    const int MIN_MOVE_ENEMY = 3000;
+    //change from 30 to 20
+    const int MIN_MOVE_BALL = 20;
     const int MIN_MOVE_PLAYER = 1000;
     const int MIN_POTENT_DIFF = 30;
     Player player;
