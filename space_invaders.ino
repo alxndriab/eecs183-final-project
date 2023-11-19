@@ -378,9 +378,15 @@ class Game {
       print_lives(player.get_lives());
 
       if(level == 1){
-        for(int i = 0; i < NUM_ENEMIES / 2; i++){
-          enemies[i].initialize(x, y, 1);
-          enemies[i].draw();
+        for (int i = NUM_ENEMIES; i < NUM_ENEMIES; i++) {
+          if(i < 8) {
+            enemies[i].initialize(x, y, 2);
+            enemies[i].draw();
+          }
+          else {
+            enemies[i].initialize(x, y, 0);
+            enemies[i].draw();
+          }
           x += 4;
         }
       }
