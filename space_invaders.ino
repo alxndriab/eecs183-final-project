@@ -467,6 +467,7 @@ class Game {
 
     else if(level > 4){
       for(int i = 0; i < NUM_ENEMIES; i++) {
+        randomSeed(analogRead(0));
         int j = random(1, 8);
         enemies[i].initialize(x, y, j);
         enemies[i].draw();
@@ -692,7 +693,6 @@ void setup() {
   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;
   }
-  randomSeed(analogRead(0));
   game.setupGame();
 }
 
