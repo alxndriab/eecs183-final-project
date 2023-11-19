@@ -473,7 +473,7 @@ class Game {
 
     else if(level > 4){
       for(int i = 0; i < NUM_ENEMIES; i++) {
-        //randSeed(seed);
+        randomSeed(analogRead(0));
         int j = random(1, 8);
         enemies[i].initialize(x, y, j);
         enemies[i].draw();
