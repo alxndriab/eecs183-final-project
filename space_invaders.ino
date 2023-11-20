@@ -171,9 +171,6 @@ class Invader {
     
     // draws the Invader
     void draw_with_rgb(Color body_color, Color eye_color) {
-      //left top corner point is default xy point
-      //******************changed from int i = 0 and int j = 0 and i < 4 and j < 4 to int i = x and int j = y and i < x + 4 and j < y + 4 so that the xy coordinates are applied to the placement of invader
-
       for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
           if (INVADER_STENCIL[row][col] == 0) {
@@ -366,7 +363,6 @@ class Game {
         player.set_lives(3);
         level = 1;
         delay(5000);
-
       }
       
       matrix.fillScreen(BLACK.to_333());
@@ -470,8 +466,13 @@ class Game {
 
     else if (level > 4) {
       for (int i = 0; i < NUM_ENEMIES; i++) {
-        int j = random(1, 8);
-        enemies[i].initialize(x, y, j);
+        if (cleared) {
+          strengths[i] = random(1, 8);
+          
+        }
+      }
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        enemies[i].initialize(x, y, strengths[i]);
         enemies[i].draw();
 
         x += 4;
@@ -598,17 +599,16 @@ class Game {
       }
 
       // checking if enemies have reached the player
-      if ((enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() == player.get_x()) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() + 3 == player.get_x()) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() == player.get_x() + 2) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() + 3 == player.get_x() + 2) || (enemies[i].get_y() + 3 == ball.get_y() && enemies[i].get_x() + 1 == player.get_x()) || (enemies[i].get_y() + 2 == player.get_y() && enemies[i].get_x() + 1 == player.get_x())) {
+      if ((enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() == player.get_x()) || (enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() + 2 == player.get_x()) || (enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() == player.get_x() + 2) || (enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() + 2 == player.get_x() + 2) || (enemies[i].get_y() + 2 == player.get_y() && enemies[i].get_x() + 1 == player.get_x()) || (enemies[i].get_y() + 2 == player.get_y() && enemies[i].get_x() + 2 == player.get_x()) || (enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() == player.get_x() + 1) || (enemies[i].get_y() + 3 == player.get_y() && enemies[i].get_x() + 3 == player.get_x() + 1)) {
         if (enemies[i].get_strength() > 0) {
-        reset_level();
-        break;
+          reset_level();
+          break;
         }
       }
     }
 
     for (int i = 0; i < NUM_ENEMIES; i++) {
       if (enemies[i].get_y() + 3 != LED_HEIGHT - 2) {
-
           // smoothing potentiometer value
           total = total - readings[readIndex];
           // read from the sensor:
@@ -624,10 +624,7 @@ class Game {
             readIndex = 0;
           }
 
-          // calculate the average:
           average = total / numReadings;
-          // send it to the computer as ASCII digits
-          Serial.println(average);
 
           player.erase();
           player.set_x(average / 32 - 1);
@@ -637,6 +634,7 @@ class Game {
 
     if (level_cleared()) {
       level++;
+      cleared = true;
       setupGame();
     }
   }
@@ -645,14 +643,14 @@ class Game {
     int level;
     unsigned long time1 = millis();
     unsigned long time2 = millis();
-    //changed from 6000 to 4000
+    boolean cleared = true;
     const int MIN_MOVE_ENEMY = 2500;
-    //change from 30 to 20
-    const int MIN_MOVE_BALL = 20;
+    const int MIN_MOVE_BALL = 50;
     const int MIN_MOVE_PLAYER = 1000;
     const int MIN_POTENT_DIFF = 20;
     Player player;
     Cannonball ball;
+    int strengths[NUM_ENEMIES] = {};
     Invader enemies[NUM_ENEMIES] = {};
 
     // check if Player defeated all Invaders in current level
@@ -674,7 +672,10 @@ class Game {
 
     // set up a level
     void reset_level() {
+      cleared = false;
       player.die();
+
+
       if (player.get_lives() < 1) {
         level = 1;
       }
