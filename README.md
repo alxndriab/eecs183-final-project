@@ -1,5 +1,13 @@
 # eecs183-final-project
+## Reach
+> Need to get 50 points
 
+Ideas:
+- 20p - add boss level
+- 20p - add player 2 option
+- 20p - add title screen
+
+# Core
 https://docs.arduino.cc/built-in-examples/analog/Smoothing
 Double check that everything is wired correctly. There should be two (2) wires between the Arduino and the breadboard, four (4) wires between the breadboard and the LED screen, and twelve (12) wires between the Arduino and the LED screen. (You will have more if you’ve wired the potentiometer and/or the button.)
 
