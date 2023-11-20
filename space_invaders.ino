@@ -497,7 +497,7 @@ class Game {
           enemies[i].erase();
           enemies[i].move();
           enemies[i].draw();
-        }
+        }   
       
       int count = 0;
       for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
