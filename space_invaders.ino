@@ -597,11 +597,11 @@ class Game {
         }
       }
 
-      // checking if enemies have reached end of screen
-      if (enemies[i].get_y() + 3 == LED_HEIGHT - 2) {
+      // checking if enemies have reached the player
+      if (enemies[i].get_y() + 4 == ball.get_y() && enemies[i].get_x() == ball.get_x() || enemies[i].get_y() + 4 == ball.get_y() && enemies[i].get_x() == ball.get_x() || enemies[i].get_y() + 3 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x() || enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x()) {
         if (enemies[i].get_strength() > 0) {
-          reset_level();
-          break;
+        reset_level();
+        break;
         }
       }
     }
