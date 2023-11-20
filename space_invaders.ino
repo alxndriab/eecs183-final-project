@@ -598,7 +598,7 @@ class Game {
       }
 
       // checking if enemies have reached the player
-      if (enemies[i].get_y() + 4 == ball.get_y() && enemies[i].get_x() == ball.get_x() || enemies[i].get_y() + 4 == ball.get_y() && enemies[i].get_x() == ball.get_x() || enemies[i].get_y() + 3 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x() || enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x()) {
+      if ((enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() == player.get_x()) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() + 3 == player.get_x()) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() == player.get_x() + 2) || (enemies[i].get_y() + 4 == player.get_y() && enemies[i].get_x() + 3 == player.get_x() + 2) || (enemies[i].get_y() + 3 == ball.get_y() && enemies[i].get_x() + 1 == player.get_x()) || (enemies[i].get_y() + 2 == player.get_y() && enemies[i].get_x() + 1 == player.get_x())) {
         if (enemies[i].get_strength() > 0) {
         reset_level();
         break;
