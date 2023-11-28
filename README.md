@@ -5,7 +5,7 @@
 Ideas:
 - 20p - add boss level
 - 20p - add player 2 option
-- 20p - add title screen
+- 10p - add title screen
 
 # Core
 https://docs.arduino.cc/built-in-examples/analog/Smoothing
