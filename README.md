@@ -1,11 +1,17 @@
 # eecs183-final-project
-## Reach
+# Reach
 > Need to get 50 points
 
 Ideas:
-- 20p - add boss level
-- 20p - add player 2
-- 10p - add title screen with options
+### 20p - invaders move side to side
+invaders cannot move off screen so check if need exactly 16 invaders
+
+### 20p - add player 2
+wire a second potentiometer and button
+instantiate player2 and ball2
+
+### 10p - add title screen with options
+Maybe have the screen when level = 0 and like stop game make sure the game DOESN'T start
 
 # Core
 https://docs.arduino.cc/built-in-examples/analog/Smoothing
