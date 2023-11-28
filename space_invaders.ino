@@ -44,6 +44,7 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 void print_level(int level);
 void print_lives(int lives);
 void game_over();
+void print_numPlayer();
 
 class Color {
   public:
@@ -365,6 +366,14 @@ class Game {
     // Modifies: global variable matrix
     void setupGame() {
 
+    if (level == 0) {
+      print_numPlayer();
+      enemies[0].initialize(1, 8, 5);
+      enemies[0].draw();
+      enemies[1].initialize(3, 8, 4);
+      enemies[1].draw();
+    }
+
       // checking if needing to reset level
       if (player.get_lives() == 0) {
         game_over();
@@ -384,14 +393,15 @@ class Game {
       print_lives(player.get_lives());
 
       // settting up level
-      if (level == 1) {
+
+    if (level == 1) {
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].initialize(x, y, 1);
           enemies[i].draw();
           x += 4;
         }
-      }
-      else if (level == 2) {
+    }
+    else if (level == 2) {
         for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           if (i % 2 == 0) {
             enemies[i].initialize(x, y, 1);
@@ -418,7 +428,7 @@ class Game {
           }
           x += 4;
         }
-      }
+    }
     else if (level == 3) {
       int count = 1;
       for (int i = 0; i < NUM_ENEMIES; i++) {
@@ -495,6 +505,90 @@ class Game {
   // see spec for details of game
   // Modifies: global variable matrix
   void update(int potentiometer_value, bool button_pressed) {
+    
+    if (level == 0) {
+      for (int i = 0; i < 2; i++) {
+        if (ball.has_been_fired()) {
+          if (i == 0) {
+            multiplayer = false;
+            if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 2 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+          }
+          else if (i == 1) {
+            multiplayer = true;
+            if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() + 2 == ball.get_y() && enemies[i].get_x() + 2 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 1 == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 2 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+            else if ((enemies[i].get_y() + 2 == ball.get_y() - 1 && enemies[i].get_x() == ball.get_x()) || (enemies[i].get_y() == ball.get_y() - 1 && enemies[i].get_x() + 3 == ball.get_x())) {
+              if (enemies[i].get_strength() > 0) {
+                ball.hit();
+                enemies[i].hit();
+                matrix.fillScreen(BLACK.to_333());
+                break;
+              }
+            }
+          }
+        }
+      }
+      //reset all enemies to zero
+      for (int i = 0; i < 2; i++) {
+        enemies[i].erase();
+      }
+      return;
+    }
+
+
     bool movedown = false;
     bool moveright = false;
 
@@ -717,9 +811,10 @@ class Game {
   }
 
   private:
-    int level;
+    int level = 0;
     int i = 0;
     int j = 0;
+    bool multiplayer = false;
     unsigned long time1 = millis();
     unsigned long time2 = millis();
     //changed from 6000 to 4000
@@ -774,7 +869,8 @@ void setup() {
   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;
   }
-  randomSeed(analogRead(4));
+  randomSeed(digitalRead(13));
+
   game.setupGame();
 }
 
@@ -813,4 +909,9 @@ void game_over() {
   matrix.fillScreen(BLACK.to_333());
   matrix.setCursor(5,0);
   matrix.print("Game Over");
+}
+
+void print_numPlayer() {
+  matrix.fillScreen(BLACK.to_333());
+  matrix.print("P1   P2");
 }
