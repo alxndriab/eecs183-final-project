@@ -8,7 +8,21 @@ invaders cannot move off screen so check if need exactly 16 invaders
 
 ### 20p - add player 2
 wire a second potentiometer and button
-instantiate player2 and ball2
+
+bool multiplayer = false #change depending on start menu
+```
+public:
+setupGame() {
+  if (multiplayer) {
+    player2.draw();
+  }
+}
+
+// place to draw ball2
+private:
+  Player player2;
+  Cannonball ball2;
+```
 
 ### 10p - add title screen with options
 Maybe have the screen when level = 0 and like stop game make sure the game DOESN'T start
