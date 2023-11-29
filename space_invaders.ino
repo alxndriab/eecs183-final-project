@@ -619,7 +619,7 @@ class Game {
         }
       }
 
-      // return;
+      return;
     }
 
 
@@ -628,10 +628,10 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
-      while ((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2) && v <= 2) [
+      if ((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2)) [
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
-          enemies[i].move();
+          enemies[i].moveleft();
           enemies[i].draw();
         }
         v++;
