@@ -628,28 +628,57 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
-      if (((enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1) && level == 1) || (enemies[0].get_y() == 4 && enemies[0].get_x() == 2 || enemies[0].get_y() == 4 && enemies[0].get_x() == 1)) {
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          enemies[i].erase();
-          enemies[i].move_left();
-          enemies[i].draw();
-        }
-        v++;
-        if (v = 2) {
-          movedown = false;
-        }
+      if (level == 1) {
+        if (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1) {
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            enemies[i].erase();
+            enemies[i].move_left();
+            enemies[i].draw();
+          }
+          v++;
+          if (v = 2) {
+            movedown = false;
+          }
 
-        int count = 0;
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          if (enemies[i].get_strength() == 0) {
-            count++;
+          int count = 0;
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            if (enemies[i].get_strength() == 0) {
+              count++;
+            }
+          }
+          if (count == NUM_ENEMIES / 2) {
+            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+            enemies[i].erase();
+            enemies[i].move_left();
+            enemies[i].draw();
+            }
           }
         }
-        if (count == NUM_ENEMIES / 2) {
-          for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].erase();
-          enemies[i].move_left();
-          enemies[i].draw();
+      }
+      else if (level > 1) {
+        if (enemies[7].get_y() == 0 && enemies[7].get_x() == 2 || enemies[7].get_y() == 0 && enemies[7].get_x() == 1) {
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            enemies[i].erase();
+            enemies[i].move_left();
+            enemies[i].draw();
+          }
+          v++;
+          if (v = 2) {
+            movedown = false;
+          }
+
+          int count = 0;
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            if (enemies[i].get_strength() == 0) {
+              count++;
+            }
+          }
+          if (count == NUM_ENEMIES / 2) {
+            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+            enemies[i].erase();
+            enemies[i].move_left();
+            enemies[i].draw();
+            }
           }
         }
       }
