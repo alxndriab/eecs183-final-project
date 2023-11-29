@@ -628,7 +628,7 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
-      if (((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2) && level == 1) || (enemies[0].get_y() == 5 && enemies[0].get_x() == 3 || enemies[0].get_y() == 5 && enemies[0].get_x() == 2)) {
+      if (((enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1) && level == 1) || (enemies[0].get_y() == 4 && enemies[0].get_x() == 2 || enemies[0].get_y() == 4 && enemies[0].get_x() == 1)) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
           enemies[i].move_left();
@@ -659,8 +659,9 @@ class Game {
           enemies[i].erase();
           enemies[i].move();
           enemies[i].draw();
-          movedown = true;
         }
+        movedown = true;
+        
         int count = 0;
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           if (enemies[i].get_strength() == 0) {
@@ -675,63 +676,61 @@ class Game {
           }
         }
       }
-      else if (moveright == false && i <= 4) {
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          enemies[i].erase();
-          enemies[i].move_right();
-          enemies[i].draw();
-          
-        }
-        i++;
-        if (i = 4) {
-          moveright = true;
-          movedown = false;
-        }
-        
-        int count = 0;
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          if (enemies[i].get_strength() == 0) {
-            count++;
+      else if (moveright == false) {
+        for (int i = 0; i < 4; i++) {
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            enemies[i].erase();
+            enemies[i].move_right();
+            enemies[i].draw();
           }
-        }
+        
+          int count = 0;
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            if (enemies[i].get_strength() == 0) {
+              count++;
+            }
+          }
 
-        if (count == NUM_ENEMIES / 2) {
-          for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].erase();
-          enemies[i].move_right();
-          enemies[i].draw();
-          }
+          if (count == NUM_ENEMIES / 2) {
+            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+            enemies[i].erase();
+            enemies[i].move_right();
+            enemies[i].draw();
+            }
+          } 
         }
-      }
-      else if (moveright == true && j <= 4) {
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          enemies[i].erase();
-          enemies[i].move_left();
-          enemies[i].draw();
-          
-        }
-        j++;
-        if (j = 4) {
-          moveright = false;
-          movedown = false;
-        }
+        moveright = true;
+        movedown = false;
         
-        int count = 0;
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          if (enemies[i].get_strength() == 0) {
-            count++;
+      }
+      else if (moveright == true) {
+        for (int i = 0; i < 4; i++) {
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            enemies[i].erase();
+            enemies[i].move_left();
+            enemies[i].draw();
+          }
+        
+          int count = 0;
+          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+            if (enemies[i].get_strength() == 0) {
+              count++;
+            }
+          }
+          if (count == NUM_ENEMIES / 2) {
+            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+              enemies[i].erase();
+              enemies[i].move_left();
+              enemies[i].draw();
+            }
           }
         }
-        if (count == NUM_ENEMIES / 2) {
-          for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          enemies[i].erase();
-          enemies[i].move_left();
-          enemies[i].draw();
-          }
-        }
+        moveright = false;
+        movedown = false;
+        
       }
       v = 0;
-      i = 0;
+      q = 0;
       j = 0;
       time1 = millis();
     }
