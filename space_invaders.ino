@@ -627,8 +627,34 @@ class Game {
     bool moveright = false;
 
     // checking if min time to move enemies
-    if (millis() - time1 > MIN_MOVE_ENEMY) {
-      if (movedown == false) {
+    if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
+      while ((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2) && v <= 2) [
+        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+          enemies[i].erase();
+          enemies[i].move();
+          enemies[i].draw();
+        }
+        v++;
+        if (v = 2) {
+          movedown = false;
+        }
+
+        int count = 0;
+        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+          if (enemies[i].get_strength() == 0) {
+            count++;
+          }
+        }
+        if (count == NUM_ENEMIES / 2) {
+          for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+          enemies[i].erase();
+          enemies[i].move();
+          enemies[i].draw();
+          }
+        }
+      ]
+
+      else if (movedown == false) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
           enemies[i].move();
@@ -649,17 +675,17 @@ class Game {
           }
         }
       }
-      else if (moveright == false && i <= 2) {
+      else if (moveright == false && i <= 4) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
           enemies[i].moveright();
           enemies[i].draw();
-          i++;
-          if (i >= 2) {
-            i = 0;
-            moveright = true;
-            movedown = false;
-          }
+          
+        }
+        i++;
+        if (i = 4) {
+          moveright = true;
+          movedown = false;
         }
         
         int count = 0;
@@ -677,17 +703,17 @@ class Game {
           }
         }
       }
-      else if (moveright == true && j <= 2) {
+      else if (moveright == true && j <= 4) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
           enemies[i].moveleft();
           enemies[i].draw();
-          j++;
-          if (j == 2) {
-            j = 0;
-            moveright = false;
-            movedown = false;
-          }
+          
+        }
+        j++;
+        if (j = 4) {
+          moveright = false;
+          movedown = false;
         }
         
         int count = 0;
@@ -696,7 +722,6 @@ class Game {
             count++;
           }
         }
-
         if (count == NUM_ENEMIES / 2) {
           for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].erase();
@@ -705,7 +730,9 @@ class Game {
           }
         }
       }
-
+      v = 0;
+      i = 0;
+      j = 0;
       time1 = millis();
     }
 
