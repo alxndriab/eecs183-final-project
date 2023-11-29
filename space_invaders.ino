@@ -628,10 +628,10 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
-      if ((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2)) {
+      if (((enemies[0].get_y() == 0 && enemies[0].get_x() == 3 || enemies[0].get_y() == 0 && enemies[0].get_x() == 2) && level == 1) || (enemies[0].get_y() == 5 && enemies[0].get_x() == 3 || enemies[0].get_y() == 5 && enemies[0].get_x() == 2)) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
-          enemies[i].moveleft();
+          enemies[i].move_left();
           enemies[i].draw();
         }
         v++;
@@ -648,7 +648,7 @@ class Game {
         if (count == NUM_ENEMIES / 2) {
           for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].erase();
-          enemies[i].move();
+          enemies[i].move_left();
           enemies[i].draw();
           }
         }
@@ -678,7 +678,7 @@ class Game {
       else if (moveright == false && i <= 4) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
-          enemies[i].moveright();
+          enemies[i].move_right();
           enemies[i].draw();
           
         }
@@ -698,7 +698,7 @@ class Game {
         if (count == NUM_ENEMIES / 2) {
           for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].erase();
-          enemies[i].moveright();
+          enemies[i].move_right();
           enemies[i].draw();
           }
         }
@@ -706,7 +706,7 @@ class Game {
       else if (moveright == true && j <= 4) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           enemies[i].erase();
-          enemies[i].moveleft();
+          enemies[i].move_left();
           enemies[i].draw();
           
         }
@@ -725,7 +725,7 @@ class Game {
         if (count == NUM_ENEMIES / 2) {
           for (int i = 0; i < NUM_ENEMIES / 2; i++) {
           enemies[i].erase();
-          enemies[i].moveleft();
+          enemies[i].move_left();
           enemies[i].draw();
           }
         }
