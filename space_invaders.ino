@@ -628,6 +628,13 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
+      int count = 0;
+      for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+        if (enemies[i].get_strength() == 0) {
+          count++;
+        }
+      }
+
       if (level == 1 && (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1)) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
@@ -637,6 +644,7 @@ class Game {
           v++;
           if (v = 2) {
             movedown = false;
+            moveright = false;
           }
 
 
@@ -663,10 +671,11 @@ class Game {
           v++;
           if (v = 2) {
             movedown = false;
+            moveright = false;
           }
           
 
-          int count = 0;
+          /*int count = 0;
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             if (enemies[i].get_strength() == 0) {
               count++;
@@ -678,9 +687,23 @@ class Game {
             enemies[i].move_left();
             enemies[i].draw();
             }
-          }
+          }*/
 
       }
+      
+      else if (level > 1 && count == NUM_ENEMIES / 2 && (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1)) {
+        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+          enemies[i].erase();
+          enemies[i].move_left();
+          enemies[i].draw();
+        }
+        v++;
+        if (v = 2) {
+          movedown = false;
+          moveright = false;
+        }
+      }
+
 
       else if (movedown == false) {
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
@@ -764,71 +787,6 @@ class Game {
       time1 = millis();
     }
 
-    /*
-    if (millis() - time1 > MIN_MOVE_ENEMY) {
-      for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-
-          // IDK DELETE
-          if ((enemies[0].get_x() != 0) && (enemies[0].get_y() != 2)) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-
-          for (int j = 0; j < 4; j++) {
-            enemies[i].erase();
-            enemies[i].move_right();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-
-          for (int k = 0; k < 4; k++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-        }
-      
-      int count = 0;
-      for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-        if (enemies[i].get_strength() == 0) {
-          count++;
-        }
-      }
-
-      if (count == NUM_ENEMIES / 2) {
-        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-
-        // IDK DELETE
-         if ((enemies[0].get_x() != 0) && (enemies[0].get_y() != 2)) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-
-          for (int j = 0; j < 4; j++) {
-            enemies[i].erase();
-            enemies[i].move_right();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-
-          for (int k = 0; k < 4; k++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].move();
-            enemies[i].draw();
-          }
-          
-        }
-      }
-
-      time1 = millis();
-    }
-    */
 
     // firing cannon
     if (button_pressed) {
