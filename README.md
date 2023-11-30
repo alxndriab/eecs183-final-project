@@ -20,6 +20,12 @@ setupGame() {
   }
 }
 
+update() {
+  if (ball2.has_been_fired) {
+   ... ball collisions
+  }
+}
+
 // place to draw ball2
 private:
   Player player2;
