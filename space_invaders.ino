@@ -11,7 +11,7 @@ const uint8_t B = A1;
 const uint8_t C = A2;
 
 // define the wiring of the inputs
-const int POTENTIOMETER_PIN_NUMBER = 4;
+const int POTENTIOMETER_PIN_NUMBER = 5;
 const int BUTTON_PIN_NUMBER = 11;
 
 const int numReadings = 10;
@@ -118,12 +118,12 @@ class Invader {
     // Moves the Invader down the screen by one row
     // Modifies: y
     void move() {
-      y++;
+      y += 2;
     }
-    void moveright() {
+    void move_right() {
       x++;
     }
-    void moveleft() {
+    void move_left() {
       x--;
     }
 
@@ -330,18 +330,8 @@ class Player {
     }
     
     // draws the player
-    //************** changed a bit - cannot use same format as previous draw_with_rgb because need to create a new hardcoded STENCIL for player (seen above)
     void draw_with_rgb(Color color) {
-      // for (int i = 0; i < 3; i++) {
-      //   for (int j = 0; j < 3; j++) {
-      //     if (PLAYER_STENCIL[i][j] == 0) {
-      //       matrix.drawPixel(j + x, i + y, BLACK.to_333());
-      //     }
-      //     else {
-      //       matrix.drawPixel(j + x, i + y, color.to_333());
-      //     }
-      //   }
-      // }
+
 
       for (int row = 0; row < 2; row++) {
         for (int col = 0; col < 3; col++) {
@@ -385,17 +375,15 @@ class Game {
         print_lives(player.get_lives());
       }
 
-      // settting up level
+      // setting up level
       if (level == 0) {
         print_numPlayer();
         enemies[0].initialize(4, 8, 5);
         enemies[0].draw();
         enemies[1].initialize(22, 8, 4);
         enemies[1].draw();
-
-        // delay(10000);
-        //level = 1;
       }
+
       else if (level == 1) {
         for (int i = 0; i < NUM_ENEMIES; i++) {
           if (i < NUM_ENEMIES / 2) {
@@ -618,7 +606,6 @@ class Game {
           }
         }
       }
-
       return;
     }
 
@@ -628,8 +615,7 @@ class Game {
 
     // checking if min time to move enemies
     if (millis() - time1 > MIN_MOVE_ENEMY && level != 0) {
-      if (level == 1) {
-        if (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1) {
+      if (level == 1 && (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1)) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
             enemies[i].move_left();
@@ -639,6 +625,7 @@ class Game {
           if (v = 2) {
             movedown = false;
           }
+
 
           int count = 0;
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
@@ -653,10 +640,8 @@ class Game {
             enemies[i].draw();
             }
           }
-        }
       }
-      else if (level > 1) {
-        if (enemies[7].get_y() == 0 && enemies[7].get_x() == 2 || enemies[7].get_y() == 0 && enemies[7].get_x() == 1) {
+      else if (level > 1 && (enemies[7].get_y() == 4 && enemies[7].get_x() == 2 || enemies[7].get_y() == 4 && enemies[7].get_x() == 1)) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
             enemies[i].move_left();
@@ -666,6 +651,7 @@ class Game {
           if (v = 2) {
             movedown = false;
           }
+          
 
           int count = 0;
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
@@ -680,7 +666,7 @@ class Game {
             enemies[i].draw();
             }
           }
-        }
+
       }
 
       else if (movedown == false) {
@@ -719,6 +705,7 @@ class Game {
               count++;
             }
           }
+
 
           if (count == NUM_ENEMIES / 2) {
             for (int i = 0; i < NUM_ENEMIES / 2; i++) {
@@ -898,8 +885,9 @@ class Game {
 
   private:
     int level = 0;
-    int i = 0;
+    int q = 0;
     int j = 0;
+    int v = 0;
     bool multiplayer = false;
     unsigned long time1 = millis();
     unsigned long time2 = millis();
