@@ -31,6 +31,18 @@ private:
   Player player2;
   Cannonball ball2;
 ```
+# Teresa Multiplayer
+I copied and pasted the player class and the cannonball class, renaming them Player_1 and Player_2 and Cannonball_1 and Cannonball_2
+  Player_1 is aqua and has an orange cannonball (Cannonball_1), and Player_2 is lime and has a yellow cannonball (Cannonball_2) to differentiate. 
+  As of right now, I have only Player_1 as having lives and being able to die because I wasn't sure how lives would work with two players and figured they could just share lives.
+    However, if there's an invader touching player 2 and not player 1, you will not die until the invader touches the bottom of the screen, which could be a problem
+
+As for the rest of the code, I have been copying and pasting everything that has an instance of player or ball and changing the names accordingly. 
+I haven't quite finished the potentiometer and button stuff because I didn't know their numbers
+I have a couple of if statements for muliplayer, but the menu isn't implemented yet, so there is nothing to actually set the mutiplayer to true or false
+I also added more parameters to UPDATE; I added potentiometer and button 2 along with the multiplayer bool
+
+
 
 ### 10p - add title screen with options
 Maybe have the screen when level = 0 and like stop game make sure the game DOESN'T start
