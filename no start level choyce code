@@ -527,7 +527,7 @@ class Game {
             }
           }
       }
-      else if (level > 1 && (enemies[0].get_y() == 0 && enemies[0].get_x() == 2 || enemies[0].get_y() == 0 && enemies[0].get_x() == 1)) {
+      else if (level > 1 && (enemies[7].get_y() == 4 && enemies[7].get_x() == 2 || enemies[7].get_y() == 4 && enemies[7].get_x() == 1)) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
             enemies[i].move_left();
