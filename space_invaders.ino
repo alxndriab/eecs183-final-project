@@ -367,7 +367,7 @@ class Game {
       matrix.fillScreen(BLACK.to_333());
       matrix.setCursor(0,0);
 
-      int x = 0;
+      int x = 2;
       int y = 0;
 
       if (level != 0) {
@@ -385,15 +385,10 @@ class Game {
       }
 
       else if (level == 1) {
-        for (int i = 0; i < NUM_ENEMIES; i++) {
-          if (i < NUM_ENEMIES / 2) {
-            enemies[i].initialize(x, y, 1);
-            enemies[i].draw();
-            x += 4;
-          }
-          else {
-            enemies[i].initialize(0, 0, 0);
-          }
+        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+          enemies[i].initialize(x, y, 1);
+          enemies[i].draw();
+          x += 4;
         }
       }
       else if (level == 2) {
@@ -410,7 +405,7 @@ class Game {
         }
 
         y = 4;
-        x = 0;
+        x = 2;
 
         for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
           if (i % 2 == 0) {
@@ -424,76 +419,76 @@ class Game {
           x += 4;
         }
       }
-      else if (level == 3) {
-        int count = 1;
-        for (int i = 0; i < NUM_ENEMIES; i++) {
-          if (i == NUM_ENEMIES / 2) {
-            y = 4;
-            x = 0;
-          }
-          if (i % 2 == 0) {
-            enemies[i].initialize(x, y, count);
-            enemies[i].draw();
-          }
-          else {
-            enemies[i].initialize(x, y, count);
-            enemies[i].draw();
-          }
-          x += 4;
-
-          count++;
-
-          if (count == 6) {
-            count = 1;
-          }
+    else if (level == 3) {
+      int count = 1;
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        if (i == NUM_ENEMIES / 2) {
+          y = 4;
+          x = 0;
         }
-      }
-        
-      else if (level == 4) {
-        for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-          if (i % 2 == 0) {
-            enemies[i].initialize(x, y, 5);
-            enemies[i].draw();
-          }
-          else {
-            enemies[i].initialize(x, y, 4);
-            enemies[i].draw();
-          }
-          x += 4;
-        }
-
-        y = 4;
-        x = 0;
-        
-        for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-          if (i % 2 == 0) {
-            enemies[i].initialize(x, y, 2);
-            enemies[i].draw();
-          }
-          else {
-            enemies[i].initialize(x, y, 3);
-            enemies[i].draw();
-          }
-          x += 4;
-        }
-      }
-
-      else if (level > 4) {
-        for (int i = 0; i < NUM_ENEMIES; i++) {
-          int j = random(1, 8);
-          enemies[i].initialize(x, y, j);
+        if (i % 2 == 0) {
+          enemies[i].initialize(x, y, count);
           enemies[i].draw();
+        }
+        else {
+          enemies[i].initialize(x, y, count);
+          enemies[i].draw();
+        }
+        x += 4;
 
-          x += 4;
+        count++;
 
-          if (i == 7) {
-            x = 0;
-            y = 4;
-          }
+        if (count == 6) {
+          count = 1;
         }
       }
+    }
+      
+    else if (level == 4) {
+      for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+        if (i % 2 == 0) {
+          enemies[i].initialize(x, y, 5);
+          enemies[i].draw();
+        }
+        else {
+          enemies[i].initialize(x, y, 4);
+          enemies[i].draw();
+        }
+        x += 4;
+      }
 
-      player.draw();
+      y = 4;
+      x = 2;
+      
+      for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+        if (i % 2 == 0) {
+          enemies[i].initialize(x, y, 2);
+          enemies[i].draw();
+        }
+        else {
+          enemies[i].initialize(x, y, 3);
+          enemies[i].draw();
+        }
+        x += 4;
+      }
+    }
+
+    else if (level > 4) {
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        int j = random(1, 8);
+        enemies[i].initialize(x, y, j);
+        enemies[i].draw();
+
+        x += 4;
+
+        if (i == 7) {
+          x = 0;
+          y = 4;
+        }
+      }
+    }
+
+    player.draw();
   }
     
   // advances the game simulation one step and renders the graphics
