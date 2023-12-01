@@ -3,7 +3,9 @@
 > Need to get 50 points
 
 todo 
-- [ ] change random seed to digital pin
+- [ ] multiplayer
+- [ ] missing legs
+- [ ] startmenu issue with collisions
 
 ### 20p - invaders move side to side
 invaders cannot move off screen so check if need exactly 16 invaders
