@@ -11,7 +11,11 @@ todo
 invaders cannot move off screen so check if need exactly 16 invaders
 
 ### 20p - add player 2
-wire a second potentiometer and button
+const int POTENTIOMETER_PIN_NUMBER = 5;
+const int BUTTON_PIN_NUMBER = 10;
+
+const int POTENTIOMETER_PIN_NUMBER2 = 4;
+const int BUTTON_PIN_NUMBER2 = 11;
 
 bool multiplayer = false #change depending on start menu
 ```
