@@ -5,7 +5,7 @@
 todo 
 - [ ] multiplayer
 - [ ] missing legs
-- [ ] startmenu issue with collisions
+- [x] startmenu issue with collisions
 
 ### 20p - invaders move side to side
 invaders cannot move off screen so check if need exactly 16 invaders
