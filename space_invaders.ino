@@ -452,7 +452,7 @@ class Game {
       for (int i = 0; i < NUM_ENEMIES; i++) {
         if (i == NUM_ENEMIES / 2) {
           y = 4;
-          x = 0;
+          x = 2;
         }
         if (i % 2 == 0) {
           enemies[i].initialize(x, y, count);
@@ -486,7 +486,7 @@ class Game {
       }
 
       y = 4;
-      x = 0;
+      x = 2;
       
       for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
         if (i % 2 == 0) {
@@ -515,7 +515,7 @@ class Game {
         x += 4;
 
         if (i == 6) {
-          x = 0;
+          x = 2;
           y = 4;
         }
       }
@@ -1016,6 +1016,7 @@ class Game {
     }
 
     if (level_cleared()) {
+      cleared = true;
       level++;
       setupGame();
     }
@@ -1041,7 +1042,7 @@ class Game {
     unsigned long time2 = millis();
     unsigned long time22 = millis();
     bool cleared = true;
-    const int MIN_MOVE_ENEMY = 2500;
+    const int MIN_MOVE_ENEMY = 1500;
     const uint8_t MIN_MOVE_BALL = 20;
     const int MIN_MOVE_PLAYER = 1000;
     const uint8_t MIN_POTENT_DIFF = 20;
