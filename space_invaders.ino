@@ -306,7 +306,7 @@ class Player {
     }
 
     void set_lives(int l) {
-      if (l < 4 && l > 0) {
+      if (l < 5 && l > 0) {
         lives = l;
       }
     }
@@ -350,17 +350,6 @@ class Player {
     // draws the player
     //************** changed a bit - cannot use same format as previous draw_with_rgb because need to create a new hardcoded STENCIL for player (seen above)
     void draw_with_rgb(Color color) {
-      // for (int i = 0; i < 3; i++) {
-      //   for (int j = 0; j < 3; j++) {
-      //     if (PLAYER_STENCIL[i][j] == 0) {
-      //       matrix.drawPixel(j + x, i + y, BLACK.to_333());
-      //     }
-      //     else {
-      //       matrix.drawPixel(j + x, i + y, color.to_333());
-      //     }
-      //   }
-      // }
-
       for (int row = 0; row < 2; row++) {
         for (int col = 0; col < 3; col++) {
           if (PLAYER_STENCIL[row][col] == 0) {
@@ -497,7 +486,7 @@ class Game {
       }
 
       y = 4;
-      x = 2;
+      x = 0;
       
       for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
         if (i % 2 == 0) {
@@ -514,13 +503,18 @@ class Game {
 
     else if (level > 4) {
       for (int i = 0; i < NUM_ENEMIES; i++) {
-        int j = random(1, 8);
-        enemies[i].initialize(x, y, j);
+        if (cleared) {
+          strengths[i] = random(1, 8);
+          
+        }
+      }
+      for (int i = 0; i < NUM_ENEMIES; i++) {
+        enemies[i].initialize(x, y, strengths[i]);
         enemies[i].draw();
 
         x += 4;
 
-        if (i == 7) {
+        if (i == 6) {
           x = 0;
           y = 4;
         }
@@ -641,6 +635,14 @@ class Game {
               }
             }
           }
+
+          // checking if min time to move cannonball
+          if (millis() - time2 > MIN_MOVE_BALL) {
+            ball.erase();
+            ball.move();
+            ball.draw();
+            time2 = millis();
+          }
         }
       }
     }
@@ -675,9 +677,9 @@ class Game {
           }
           if (count == NUM_ENEMIES / 2) {
             for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].draw();
+              enemies[i].erase();
+              enemies[i].move_left();
+              enemies[i].draw();
             }
           }
       }
@@ -692,21 +694,6 @@ class Game {
             movedown = false;
             moveright = false;
           }
-          
-
-          /*int count = 0;
-          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-            if (enemies[i].get_strength() == 0) {
-              count++;
-            }
-          }
-          if (count == NUM_ENEMIES / 2) {
-            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].draw();
-            }
-          }*/
 
       }
       
@@ -747,8 +734,8 @@ class Game {
         }
       }
       else if (moveright == false) {
-        for (int i = 0; i < 4; i++) {
-          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+        for (int j = 0; j < 4; j++) {
+          for (int i = NUM_ENEMIES - 1; i >= NUM_ENEMIES / 2; i--) {
             enemies[i].erase();
             enemies[i].move_right();
             enemies[i].draw();
@@ -761,9 +748,8 @@ class Game {
             }
           }
 
-
           if (count == NUM_ENEMIES / 2) {
-            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+            for (int i = NUM_ENEMIES / 2 - 1; i >= 0; i--) {
             enemies[i].erase();
             enemies[i].move_right();
             enemies[i].draw();
@@ -775,7 +761,7 @@ class Game {
         
       }
       else if (moveright == true) {
-        for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
             enemies[i].move_left();
@@ -800,9 +786,6 @@ class Game {
         movedown = false;
         
       }
-      v = 0;
-      q = 0;
-      j = 0;
       time1 = millis();
     }
 
@@ -821,7 +804,7 @@ class Game {
       if (button_pressed2) {
         if (!(ball2.has_been_fired())) {
           ball2.reset();
-          ball2.fire(player.get_x() + 1, player.get_y() - 1);
+          ball2.fire(player2.get_x() + 1, player2.get_y() - 1);
           ball2.draw();
         }
       }
@@ -1057,6 +1040,7 @@ class Game {
     unsigned long time1 = millis();
     unsigned long time2 = millis();
     unsigned long time22 = millis();
+    bool cleared = true;
     const int MIN_MOVE_ENEMY = 2500;
     const uint8_t MIN_MOVE_BALL = 20;
     const int MIN_MOVE_PLAYER = 1000;
@@ -1065,6 +1049,7 @@ class Game {
     Player player2 = Player(2);
     Cannonball ball;
     Cannonball ball2;
+    int strengths[NUM_ENEMIES] = {};
     Invader enemies[NUM_ENEMIES] = {};
 
     // check if Player defeated all Invaders in current level
@@ -1086,13 +1071,17 @@ class Game {
 
     // set up a level
     void reset_level() {
+      cleared = false;
       player.die();
+      
       if (player.get_lives() < 1) {
         level = 1;
       }
+      
       for (int i = 0; i < NUM_ENEMIES; i++) {
         enemies[i].initialize(2, 0, 0);
       }
+      
       ball.reset();
       setupGame();
     }
@@ -1109,6 +1098,7 @@ void setup() {
   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;
   }
+  randomSeed(analogRead(6));
   game.setupGame();
 }
 
