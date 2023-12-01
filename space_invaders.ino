@@ -656,9 +656,9 @@ class Game {
           }
           if (count == NUM_ENEMIES / 2) {
             for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].draw();
+              enemies[i].erase();
+              enemies[i].move_left();
+              enemies[i].draw();
             }
           }
       }
@@ -673,21 +673,6 @@ class Game {
             movedown = false;
             moveright = false;
           }
-          
-
-          /*int count = 0;
-          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
-            if (enemies[i].get_strength() == 0) {
-              count++;
-            }
-          }
-          if (count == NUM_ENEMIES / 2) {
-            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
-            enemies[i].erase();
-            enemies[i].move_left();
-            enemies[i].draw();
-            }
-          }*/
 
       }
       
@@ -728,8 +713,8 @@ class Game {
         }
       }
       else if (moveright == false) {
-        for (int i = 0; i < 4; i++) {
-          for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
+        for (int j = 0; j < 4; j++) {
+          for (int i = NUM_ENEMIES - 1; i >= NUM_ENEMIES / 2; i--) {
             enemies[i].erase();
             enemies[i].move_right();
             enemies[i].draw();
@@ -742,9 +727,8 @@ class Game {
             }
           }
 
-
           if (count == NUM_ENEMIES / 2) {
-            for (int i = 0; i < NUM_ENEMIES / 2; i++) {
+            for (int i = NUM_ENEMIES / 2 - 1; i >= 0; i--) {
             enemies[i].erase();
             enemies[i].move_right();
             enemies[i].draw();
@@ -756,7 +740,7 @@ class Game {
         
       }
       else if (moveright == true) {
-        for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
           for (int i = NUM_ENEMIES / 2; i < NUM_ENEMIES; i++) {
             enemies[i].erase();
             enemies[i].move_left();
@@ -781,9 +765,6 @@ class Game {
         movedown = false;
         
       }
-      v = 0;
-      q = 0;
-      j = 0;
       time1 = millis();
     }
 
