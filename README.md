@@ -5,6 +5,7 @@
 todo 
 - [ ] multiplayer
 - [ ] missing legs
+- [ ] set lives to a global variable
 - [x] startmenu issue with collisions
 
 ### 20p - invaders move side to side
